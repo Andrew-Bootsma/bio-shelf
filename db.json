@@ -1,0 +1,64 @@
+{
+  "materials": [
+    {
+      "id": "1",
+      "name": "Tris-HCl Buffer (1M, pH 8.0)",
+      "type": "reagent",
+      "quantity": 250,
+      "unit": "mL",
+      "location": "Fridge A - Top Shelf",
+      "expiryDate": "2025-12-01",
+      "vendor": "Thermo Fisher",
+      "description": "pH 8.0 buffer used in DNA, RNA, and protein protocols.",
+      "notes": ""
+    },
+    {
+      "id": "2",
+      "name": "1.5 mL Microcentrifuge Tubes",
+      "type": "consumable",
+      "quantity": 1000,
+      "unit": "pcs",
+      "location": "Cabinet 3",
+      "expiryDate": null,
+      "vendor": "Eppendorf",
+      "description": "Disposable tubes for sample prep, centrifugation, and storage.",
+      "notes": ""
+    },
+    {
+      "id": "3",
+      "name": "Human Plasma (Frozen)",
+      "type": "sample",
+      "quantity": 20,
+      "unit": "vials",
+      "location": "Freezer -80°C",
+      "expiryDate": "2024-10-01",
+      "vendor": "BioIVT",
+      "description": "Frozen human plasma used for research and diagnostic applications.",
+      "notes": "Use PPE when handling."
+    },
+    {
+      "id": "4",
+      "name": "Vortex Mixer",
+      "type": "equipment",
+      "quantity": 1,
+      "unit": "unit",
+      "location": "Bench 5",
+      "expiryDate": null,
+      "vendor": "VWR",
+      "description": "Benchtop device for rapid mixing of liquid samples in tubes.",
+      "notes": ""
+    },
+    {
+      "id": "5",
+      "name": "Agarose Powder",
+      "type": "reagent",
+      "quantity": 500,
+      "unit": "g",
+      "location": "Cabinet 2 - Dry Shelf",
+      "expiryDate": "2026-03-15",
+      "vendor": "Sigma-Aldrich",
+      "description": "Dry powder used to prepare agarose gels for nucleic acid electrophoresis.",
+      "notes": ""
+    }
+  ]
+}
