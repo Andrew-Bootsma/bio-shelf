@@ -4,27 +4,62 @@ import Material from "./Material";
 const App = () => {
   return (
     <div>
-      <h1>BioShelf</h1>
-      <Material
-        name="Tris-HCl Buffer (1M, pH 8.0)"
-        description="pH 8.0 buffer used in DNA, RNA, and protein protocols"
-      />
-      <Material
-        name="1.5 mL Microcentrifuge Tubes"
-        description="Disposable tubes for sample prep, centrifugation, and storage"
-      />
-      <Material
-        name="Human Plasma (Frozen)"
-        description="Frozen human plasma used for research and diagnostic applications"
-      />
-      <Material
-        name="Vortex Mixer"
-        description="Benchtop device for rapid mixing of liquid samples in tubes"
-      />
-      <Material
-        name="Agarose Powder (Store at room temp, dry)"
-        description="Dry powder used to prepare agarose gels for nucleic acid electrophoresis"
-      />
+      <h1 className="sectionHeader">BioShelf</h1>
+
+      <div className="overflow-x-auto border border-black shadow-hard">
+        <table className="w-full text-left font-mono text-sm">
+          <thead className="bg-brand-muted uppercase text-black">
+            <tr>
+              <th className="border border-black px-2 py-1">Name</th>
+              <th className="border border-black px-2 py-1 text-center">Qty</th>
+              <th className="border border-black px-2 py-1 text-center">
+                Unit
+              </th>
+              <th className="border border-black px-2 py-1 text-center">
+                Status
+              </th>
+              <th className="border border-black px-2 py-1 text-center">
+                Expires
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <Material
+              name="Tris-HCl Buffer (1M, pH 8.0)"
+              quantity={250}
+              unit="mL"
+              status="OK"
+              expiryDate="2025-12-01"
+            />
+            <Material
+              name="1.5 mL Microcentrifuge Tubes"
+              quantity={1000}
+              unit="pcs"
+              status="OK"
+            />
+            <Material
+              name="Human Plasma (Frozen)"
+              quantity={100}
+              unit="L"
+              status="EXPIRED"
+              expiryDate="2024-10-01"
+            />
+            <Material
+              name="Vortex Mixer"
+              quantity={1}
+              unit="unit"
+              status="LOW"
+            />
+            <Material
+              name="Agarose Powder (Store at room temp, dry)"
+              quantity={100}
+              unit="g"
+              status="OK"
+              expiryDate="2026-03-15"
+            />
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
