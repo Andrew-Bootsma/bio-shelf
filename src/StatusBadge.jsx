@@ -1,5 +1,3 @@
-import React from "react";
-
 const StatusBadge = (props) => {
   const color = {
     LOW: "text-red-600",
