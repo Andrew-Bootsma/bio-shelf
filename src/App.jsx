@@ -1,13 +1,15 @@
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import AddMaterial from "./AddMaterial";
 
 const App = () => {
   return (
-    <div className="m-4 font-mono">
-      <h1>BioShelf</h1>
-
-      <AddMaterial />
-    </div>
+    <StrictMode>
+      <div className="m-4 font-mono">
+        <h1>BioShelf</h1>
+        <AddMaterial />
+      </div>
+    </StrictMode>
   );
 };
 
