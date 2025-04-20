@@ -1,4 +1,11 @@
 {
+  "types": ["reagent", "sample", "equipment", "consumable"],
+  "unitOptions": {
+    "reagent": ["mL", "µL", "g", "mg", "units"],
+    "sample": ["vials", "tubes", "slides", "µg", "samples"],
+    "equipment": ["unit", "set", "piece"],
+    "consumable": ["pcs", "boxes", "packs", "sheets", "strips"]
+  },
   "materials": [
     {
       "id": "1",
@@ -10,7 +17,8 @@
       "expiryDate": "2025-12-01",
       "vendor": "Thermo Fisher",
       "description": "pH 8.0 buffer used in DNA, RNA, and protein protocols.",
-      "notes": ""
+      "notes": "",
+      "status": "OK"
     },
     {
       "id": "2",
@@ -22,7 +30,8 @@
       "expiryDate": null,
       "vendor": "Eppendorf",
       "description": "Disposable tubes for sample prep, centrifugation, and storage.",
-      "notes": ""
+      "notes": "",
+      "status": "OK"
     },
     {
       "id": "3",
@@ -34,7 +43,8 @@
       "expiryDate": "2024-10-01",
       "vendor": "BioIVT",
       "description": "Frozen human plasma used for research and diagnostic applications.",
-      "notes": "Use PPE when handling."
+      "notes": "Use PPE when handling.",
+      "status": "EXPIRED"
     },
     {
       "id": "4",
@@ -46,7 +56,8 @@
       "expiryDate": null,
       "vendor": "VWR",
       "description": "Benchtop device for rapid mixing of liquid samples in tubes.",
-      "notes": ""
+      "notes": "",
+      "status": "LOW"
     },
     {
       "id": "5",
@@ -58,7 +69,8 @@
       "expiryDate": "2026-03-15",
       "vendor": "Sigma-Aldrich",
       "description": "Dry powder used to prepare agarose gels for nucleic acid electrophoresis.",
-      "notes": ""
+      "notes": "",
+      "status": "OK"
     }
   ]
 }
