@@ -12,9 +12,6 @@ module.exports = {
           muted: "#D8D9F2",
         },
       },
-      boxShadow: {
-        hard: "2px 2px 0 black",
-      },
     },
   },
   plugins: [require("@tailwindcss/forms")],

@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+
+import { useTypes } from "./useTypes";
+import { useUnitOptions } from "./useUnitOptions";
 
 const AddMaterial = () => {
-  const [types, setTypes] = useState([]);
-  const [unitOptions, setUnitOptions] = useState({});
-
   const [name, setName] = useState("");
   const [type, setType] = useState("reagent");
   const [quantity, setQuantity] = useState(0);
@@ -14,30 +14,35 @@ const AddMaterial = () => {
   const [description, setDescription] = useState("");
   const [notes, setNotes] = useState("");
 
-  async function fetchTypes() {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+  const types = useTypes();
+  const unitOptions = useUnitOptions();
 
-    const [typeRes, unitRes] = await Promise.all([
-      fetch("/api/types"),
-      fetch("/api/unitOptions"),
-    ]);
-
-    const typesData = await typeRes.json();
-    const unitsData = await unitRes.json();
-
-    setTypes(typesData);
-    setUnitOptions(unitsData);
+  if (!types || !unitOptions) {
+    return <div className="mx-4 my-8">Loading...</div>;
   }
 
-  useEffect(() => {
-    fetchTypes();
-  }, []);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const material = Object.fromEntries(formData);
+
+    fetch("/api/materials", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(material),
+    });
+  };
 
   return (
     <div>
       <h2>Add Material</h2>
       <div className="flex justify-center">
-        <form className="w-1/2 border-b border-l border-r border-black p-4 align-middle">
+        <form
+          className="w-1/2 border-b border-l border-r border-black p-4 align-middle"
+          onSubmit={handleSubmit}
+        >
           <div className="form-element">
             <label htmlFor="name" className="mr-8">
               Name
@@ -63,8 +68,8 @@ const AddMaterial = () => {
               className="grow"
             >
               {types.map((type) => (
-                <option key={type} value={type}>
-                  {type}
+                <option key={type.id} value={type.id}>
+                  {type.id}
                 </option>
               ))}
             </select>
