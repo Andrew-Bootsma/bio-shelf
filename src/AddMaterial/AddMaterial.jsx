@@ -4,15 +4,17 @@ import { useTypes } from "./useTypes";
 import { useUnitOptions } from "./useUnitOptions";
 
 const AddMaterial = () => {
-  const [name, setName] = useState("");
-  const [type, setType] = useState("reagent");
-  const [quantity, setQuantity] = useState(0);
-  const [unit, setUnit] = useState("");
-  const [location, setLocation] = useState("");
-  const [expiryDate, setExpiryDate] = useState("");
-  const [vendor, setVendor] = useState("");
-  const [description, setDescription] = useState("");
-  const [notes, setNotes] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    type: "reagent",
+    quantity: 0,
+    unit: "",
+    location: "",
+    expiryDate: "",
+    vendor: "",
+    description: "",
+    notes: "",
+  });
 
   const types = useTypes();
   const unitOptions = useUnitOptions();
@@ -21,10 +23,17 @@ const AddMaterial = () => {
     return <div className="mx-4 my-8">Loading...</div>;
   }
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const material = Object.fromEntries(formData);
+    const material = Object.fromEntries(new FormData(e.target));
 
     fetch("/api/materials", {
       method: "POST",
@@ -32,6 +41,18 @@ const AddMaterial = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(material),
+    });
+
+    setFormData({
+      name: "",
+      type: "reagent",
+      quantity: 0,
+      unit: "",
+      location: "",
+      expiryDate: "",
+      vendor: "",
+      description: "",
+      notes: "",
     });
   };
 
@@ -50,9 +71,9 @@ const AddMaterial = () => {
             <input
               name="name"
               type="text"
-              value={name}
+              value={formData.name}
               required
-              onChange={(e) => setName(e.target.value)}
+              onChange={handleChange}
               className="grow"
             />
           </div>
@@ -63,8 +84,8 @@ const AddMaterial = () => {
             </label>
             <select
               name="type"
-              value={type}
-              onChange={(e) => setType(e.target.value)}
+              value={formData.type}
+              onChange={handleChange}
               className="grow"
             >
               {types.map((type) => (
@@ -83,9 +104,9 @@ const AddMaterial = () => {
               <input
                 name="quantity"
                 type="number"
-                value={quantity}
+                value={formData.quantity}
                 required
-                onChange={(e) => setQuantity(e.target.value)}
+                onChange={handleChange}
                 min={0}
               />
             </div>
@@ -95,11 +116,11 @@ const AddMaterial = () => {
               </label>
               <select
                 name="unit"
-                value={unit}
-                onChange={(e) => setUnit(e.target.value)}
+                value={formData.unit}
+                onChange={handleChange}
                 className="grow"
               >
-                {(unitOptions[type] || []).map((unit) => (
+                {(unitOptions[formData.type] || []).map((unit) => (
                   <option key={unit} value={unit}>
                     {unit}
                   </option>
@@ -115,9 +136,9 @@ const AddMaterial = () => {
             <input
               name="location"
               type="text"
-              value={location}
+              value={formData.location}
               required
-              onChange={(e) => setLocation(e.target.value)}
+              onChange={handleChange}
               className="grow"
             />
           </div>
@@ -129,8 +150,8 @@ const AddMaterial = () => {
             <input
               name="expiryDate"
               type="date"
-              value={expiryDate}
-              onChange={(e) => setExpiryDate(e.target.value)}
+              value={formData.expiryDate}
+              onChange={handleChange}
               className="grow"
               min={new Date().toISOString().split("T")[0]}
             />
@@ -143,8 +164,8 @@ const AddMaterial = () => {
             <input
               name="vendor"
               type="text"
-              value={vendor}
-              onChange={(e) => setVendor(e.target.value)}
+              value={formData.vendor}
+              onChange={handleChange}
               className="grow"
             />
           </div>
@@ -155,8 +176,8 @@ const AddMaterial = () => {
             </label>
             <textarea
               name="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              value={formData.description}
+              onChange={handleChange}
               className="grow"
             />
           </div>
@@ -167,8 +188,8 @@ const AddMaterial = () => {
             </label>
             <textarea
               name="notes"
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
+              value={formData.notes}
+              onChange={handleChange}
               className="grow"
             />
           </div>

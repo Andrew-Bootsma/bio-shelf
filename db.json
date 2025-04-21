@@ -137,6 +137,18 @@
       "vendor": "Walmart",
       "description": "",
       "notes": ""
+    },
+    {
+      "id": "0fb3",
+      "name": "Baking soda",
+      "type": "sample",
+      "quantity": "800",
+      "unit": "samples",
+      "location": "Counter",
+      "expiryDate": "2026-04-21",
+      "vendor": "Walmart",
+      "description": "",
+      "notes": ""
     }
   ]
 }
