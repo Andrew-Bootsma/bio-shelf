@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
-import { useTypes } from "./useTypes";
-import { useUnitOptions } from "./useUnitOptions";
+import { MaterialMetaContext } from "../contexts";
 
 const AddMaterial = () => {
   const [formData, setFormData] = useState({
@@ -16,8 +15,7 @@ const AddMaterial = () => {
     notes: "",
   });
 
-  const types = useTypes();
-  const unitOptions = useUnitOptions();
+  const { types, unitOptions } = useContext(MaterialMetaContext);
 
   if (!types || !unitOptions) {
     return <div className="mx-4 my-8">Loading...</div>;
@@ -31,11 +29,11 @@ const AddMaterial = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
     const material = Object.fromEntries(new FormData(e.target));
 
-    fetch("/api/materials", {
+    await fetch("/api/materials", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -54,7 +52,7 @@ const AddMaterial = () => {
       description: "",
       notes: "",
     });
-  };
+  }
 
   return (
     <div>
