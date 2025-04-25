@@ -12,22 +12,29 @@ import { MaterialMetaContext } from "../contexts";
 
 export const Route = createRootRoute({
   component: () => {
-    const { data: typesData } = useQuery({
+    const { data: typesData, isLoading: typesLoading } = useQuery({
       queryKey: ["types"],
       queryFn: () => getTypes(),
-      staleTime: 30000,
+      staleTime: 1000 * 60 * 60,
     });
 
-    const { data: unitOptionsData } = useQuery({
+    const { data: unitOptionsData, isLoading: unitOptionsLoading } = useQuery({
       queryKey: ["unitOptions"],
       queryFn: () => getUnitOptions(),
-      staleTime: 30000,
+      staleTime: 1000 * 60 * 60,
     });
+
+    if (typesLoading || unitOptionsLoading) {
+      return <div className="font-mono">Loading application data...</div>;
+    }
 
     return (
       <>
         <MaterialMetaContext.Provider
-          value={{ types: typesData, unitOptions: unitOptionsData }}
+          value={{
+            types: typesData ?? [],
+            unitOptions: unitOptionsData ?? [],
+          }}
         >
           <div className="font-mono">
             <Header />
