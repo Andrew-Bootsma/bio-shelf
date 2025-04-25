@@ -1,19 +1,28 @@
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
+
+import getMaterials from "../api/getMaterials";
 
 import MaterialRow from "../components/MaterialRow/MaterialRow";
 
-import { useMaterials } from "../hooks/useMaterials";
-
 export const Route = createLazyFileRoute("/inventory")({
-  component: Inventory,
+  component: InventoryRoute,
 });
 
-function Inventory() {
-  const materials = useMaterials();
+function InventoryRoute() {
+  const [page, setPage] = useState(1);
+  const { isLoading, data: materialsResponse } = useQuery({
+    queryKey: ["materials", page],
+    queryFn: () => getMaterials(page),
+    staleTime: 30000,
+  });
 
-  if (!materials) {
+  if (isLoading) {
     return <div className="mx-4 my-8">Loading...</div>;
   }
+
+  const materials = materialsResponse.data;
 
   return (
     <div>
@@ -36,6 +45,23 @@ function Inventory() {
           ))}
         </tbody>
       </table>
+      <div className="my-4 flex items-center justify-center gap-4">
+        <button
+          className="rounded bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
+          disabled={!materialsResponse.prev}
+          onClick={() => setPage(page - 1)}
+        >
+          Previous
+        </button>
+        <span>Page {page}</span>
+        <button
+          className="rounded bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
+          disabled={!materialsResponse.next}
+          onClick={() => setPage(page + 1)}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }

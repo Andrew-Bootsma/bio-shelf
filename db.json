@@ -161,6 +161,30 @@
       "vendor": "Walmart",
       "description": "blah",
       "notes": "blah blah"
+    },
+    {
+      "id": "3e93",
+      "name": "Andrew Bootsma",
+      "type": "reagent",
+      "quantity": "30",
+      "unit": "mL",
+      "location": "Toronto, Ontario, Canada",
+      "expiryDate": "2025-05-09",
+      "vendor": "Walmart",
+      "description": "",
+      "notes": ""
+    },
+    {
+      "id": "d165",
+      "name": "Andrew Bootsma",
+      "type": "equipment",
+      "quantity": "4",
+      "unit": "set",
+      "location": "Toronto, Ontario, Canada",
+      "expiryDate": "2025-05-08",
+      "vendor": "Walmart",
+      "description": "",
+      "notes": ""
     }
   ]
 }
