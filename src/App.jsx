@@ -1,25 +1,14 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { routeTree } from "./routeTree.gen";
 
-import { MaterialMetaContext } from "./contexts";
-
-import Inventory from "./Inventory/Inventory";
-import AddMaterial from "./AddMaterial/AddMaterial";
-
-import { useFetchMaterialMeta } from "./useMaterialMeta";
+const router = createRouter({ routeTree });
 
 const App = () => {
-  const materialMeta = useFetchMaterialMeta();
-
   return (
     <StrictMode>
-      <MaterialMetaContext.Provider value={materialMeta}>
-        <div className="font-mono">
-          <h1 className="mx-4 mt-4">BioShelf</h1>
-          <Inventory />
-          <AddMaterial />
-        </div>
-      </MaterialMetaContext.Provider>
+      <RouterProvider router={router} />
     </StrictMode>
   );
 };

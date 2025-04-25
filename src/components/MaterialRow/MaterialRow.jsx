@@ -8,7 +8,7 @@ import {
 
 import StatusBadge from "./StatusBadge/StatusBadge";
 
-import { useFormatUnits } from "./useFormatUnits";
+import { useFormatUnits } from "../../hooks/useFormatUnits";
 
 const MaterialRow = ({ quantity, unit, name, expiryDate, location, type }) => {
   const formattedQuantity = useFormatUnits(quantity, unit);

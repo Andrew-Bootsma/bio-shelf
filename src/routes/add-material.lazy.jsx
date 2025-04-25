@@ -1,8 +1,13 @@
 import { useState, useContext } from "react";
+import { createLazyFileRoute } from "@tanstack/react-router";
 
 import { MaterialMetaContext } from "../contexts";
 
-const AddMaterial = () => {
+export const Route = createLazyFileRoute("/add-material")({
+  component: AddMaterial,
+});
+
+function AddMaterial() {
   const [formData, setFormData] = useState({
     name: "",
     type: "reagent",
@@ -56,10 +61,10 @@ const AddMaterial = () => {
 
   return (
     <div>
-      <h2>Add Material</h2>
+      <h2 className="mx-4 mb-8">Add Material</h2>
       <div className="flex justify-center">
         <form
-          className="w-1/2 border-b border-l border-r border-black p-4 align-middle"
+          className="w-1/2 border border-black p-4 align-middle"
           onSubmit={handleSubmit}
         >
           <div className="form-element">
@@ -198,6 +203,4 @@ const AddMaterial = () => {
       </div>
     </div>
   );
-};
-
-export default AddMaterial;
+}

@@ -1,8 +1,14 @@
-import { useMaterials } from "./useMaterials";
+import { createLazyFileRoute } from "@tanstack/react-router";
 
-import MaterialRow from "./MaterialRow/MaterialRow";
+import MaterialRow from "../components/MaterialRow/MaterialRow";
 
-const Inventory = () => {
+import { useMaterials } from "../hooks/useMaterials";
+
+export const Route = createLazyFileRoute("/inventory")({
+  component: Inventory,
+});
+
+function Inventory() {
   const materials = useMaterials();
 
   if (!materials) {
@@ -32,6 +38,4 @@ const Inventory = () => {
       </table>
     </div>
   );
-};
-
-export default Inventory;
+}
