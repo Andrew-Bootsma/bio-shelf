@@ -5,10 +5,11 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import getTypes from "../api/getTypes";
 import getUnitOptions from "../api/getUnitOptions";
+import getMaterials from "../api/getMaterials";
 
 import Header from "../components/Header/Header";
 
-import { MaterialMetaContext } from "../contexts";
+import { MaterialMetaContext, MaterialContext } from "../contexts";
 
 export const Route = createRootRoute({
   component: () => {
@@ -24,7 +25,13 @@ export const Route = createRootRoute({
       staleTime: 1000 * 60 * 60,
     });
 
-    if (typesLoading || unitOptionsLoading) {
+    const { data: materialsData, isLoading: materialsLoading } = useQuery({
+      queryKey: ["materials"],
+      queryFn: () => getMaterials(),
+      staleTime: 1000 * 60 * 60,
+    });
+
+    if (typesLoading || unitOptionsLoading || materialsLoading) {
       return <div className="font-mono">Loading application data...</div>;
     }
 
@@ -36,10 +43,16 @@ export const Route = createRootRoute({
             unitOptions: unitOptionsData ?? [],
           }}
         >
-          <div className="font-mono">
-            <Header />
-            <Outlet />
-          </div>
+          <MaterialContext.Provider
+            value={{
+              materials: materialsData ?? [],
+            }}
+          >
+            <div className="font-mono">
+              <Header />
+              <Outlet />
+            </div>
+          </MaterialContext.Provider>
         </MaterialMetaContext.Provider>
         <TanStackRouterDevtools />
         <ReactQueryDevtools />

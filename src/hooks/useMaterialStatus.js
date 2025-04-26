@@ -1,4 +1,4 @@
-export const useMaterialStatus = (quantity, expiryDate, type) => {
+export const useMaterialStatus = (material) => {
   const LOW_STOCK_THRESHOLDS = {
     reagent: 50,
     consumable: 100,
@@ -6,11 +6,12 @@ export const useMaterialStatus = (quantity, expiryDate, type) => {
   };
 
   const today = new Date().setHours(0, 0, 0, 0);
-  const threshold = LOW_STOCK_THRESHOLDS[type];
+  const threshold = LOW_STOCK_THRESHOLDS[material.type];
 
-  const isLow = quantity < threshold;
+  const isLow = material.quantity < threshold;
   const isExpired =
-    expiryDate && new Date(expiryDate).setHours(0, 0, 0, 0) <= today;
+    material.expiryDate &&
+    new Date(material.expiryDate).setHours(0, 0, 0, 0) <= today;
 
   if (isExpired) return "EXPIRED";
   if (isLow) return "LOW";

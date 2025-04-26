@@ -49,7 +49,7 @@ function MaterialsRoute() {
         </thead>
         <tbody>
           {materials.map((material) => (
-            <MaterialRow key={material.id} {...material} />
+            <MaterialRow key={material.id} material={material} />
           ))}
         </tbody>
       </table>

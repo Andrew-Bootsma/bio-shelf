@@ -1,11 +1,11 @@
 import { useMaterialStatus } from "../../../hooks/useMaterialStatus";
 
-const StatusBadge = ({ quantity, expiryDate, type }) => {
-  if (type === "equipment") {
+const StatusBadge = ({ material }) => {
+  if (material.type === "equipment") {
     return "—";
   }
 
-  const status = useMaterialStatus(quantity, expiryDate, type);
+  const status = useMaterialStatus(material);
 
   const color = {
     LOW: "text-red-600",

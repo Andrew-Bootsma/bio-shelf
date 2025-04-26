@@ -12,17 +12,9 @@ import StatusBadge from "./StatusBadge/StatusBadge";
 
 import { useFormatUnits } from "../../hooks/useFormatUnits";
 
-const MaterialRow = ({
-  id,
-  quantity,
-  unit,
-  name,
-  expiryDate,
-  location,
-  type,
-}) => {
+const MaterialRow = ({ material }) => {
   const navigate = useNavigate();
-  const formattedQuantity = useFormatUnits(quantity, unit);
+  const formattedQuantity = useFormatUnits(material.quantity, material.unit);
 
   const icon = {
     reagent: faFlask,
@@ -35,22 +27,25 @@ const MaterialRow = ({
     <tr
       className="h-16 cursor-pointer border-t border-black hover:bg-brand-muted"
       onClick={() =>
-        navigate({ to: `/materials/$materialId`, params: { materialId: id } })
+        navigate({
+          to: `/materials/$materialId`,
+          params: { materialId: material.id },
+        })
       }
       tabIndex={0}
       role="link"
-      aria-label={`View details for ${name}`}
+      aria-label={`View details for ${material.name}`}
     >
       <td className="pl-4">
-        <FontAwesomeIcon icon={icon[type]} />
+        <FontAwesomeIcon icon={icon[material.type]} />
       </td>
-      <td>{name}</td>
+      <td>{material.name}</td>
       <td>{formattedQuantity}</td>
       <td>
-        <StatusBadge quantity={quantity} expiryDate={expiryDate} type={type} />
+        <StatusBadge material={material} />
       </td>
-      <td>{expiryDate ?? "—"}</td>
-      <td>{location}</td>
+      <td>{material.expiryDate ?? "—"}</td>
+      <td>{material.location}</td>
     </tr>
   );
 };

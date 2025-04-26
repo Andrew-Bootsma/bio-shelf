@@ -163,9 +163,7 @@ const MaterialForm = ({ materialData, handleSubmit }) => {
           className="grow"
         />
       </div>
-      <button type="submit" className="button">
-        Add Material
-      </button>
+      <button type="submit">Add Material</button>
     </form>
   );
 };
