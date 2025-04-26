@@ -1,22 +1,30 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useMatches } from "@tanstack/react-router";
 
 import getMaterials from "../api/getMaterials";
 
 import MaterialRow from "../components/MaterialRow/MaterialRow";
 
-export const Route = createLazyFileRoute("/inventory")({
-  component: InventoryRoute,
+export const Route = createFileRoute("/materials")({
+  component: MaterialsRoute,
 });
 
-function InventoryRoute() {
+function MaterialsRoute() {
+  const matches = useMatches();
+  const isExactMaterialsRoute = matches.length === 2;
+
   const [page, setPage] = useState(1);
-  const { isLoading, data: materialsResponse } = useQuery({
+  const { data: materialsResponse, isLoading } = useQuery({
     queryKey: ["materials", page],
     queryFn: () => getMaterials(page),
     staleTime: 30000,
+    enabled: isExactMaterialsRoute,
   });
+
+  if (!isExactMaterialsRoute) {
+    return <Outlet />;
+  }
 
   if (isLoading) {
     return <div className="mx-4 my-8">Loading...</div>;

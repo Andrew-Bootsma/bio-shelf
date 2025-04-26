@@ -9,10 +9,10 @@ function Index() {
     <div>
       <ul>
         <li>
-          <Link to="/inventory">Inventory</Link>
+          <Link to="/materials">Inventory</Link>
         </li>
         <li>
-          <Link to="/add-material">Add Material</Link>
+          <Link to="/materials/new">Add Material</Link>
         </li>
       </ul>
     </div>
