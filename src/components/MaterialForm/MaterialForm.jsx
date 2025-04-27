@@ -17,7 +17,7 @@ const MaterialForm = ({ materialData, handleSubmit }) => {
 
   const { types, unitOptions } = useContext(MaterialMetaContext);
 
-  if (!types || !unitOptions) {
+  if (!unitOptions || !types) {
     return <div className="mx-4 my-8">Loading...</div>;
   }
 
