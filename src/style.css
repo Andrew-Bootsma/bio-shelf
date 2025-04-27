@@ -8,7 +8,11 @@
   }
 
   h2 {
-    @apply border border-black p-5 text-2xl font-bold uppercase;
+    @apply mx-4 mb-8 border border-black p-5 text-2xl font-bold uppercase;
+  }
+
+  h3 {
+    @apply p-4 text-xl uppercase text-gray-700;
   }
 
   .form-element {

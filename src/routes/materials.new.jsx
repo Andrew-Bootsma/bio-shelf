@@ -7,7 +7,6 @@ export const Route = createFileRoute("/materials/new")({
 });
 
 function NewMaterial() {
-  console.log("NewMaterial component rendered");
   const router = useRouter();
 
   async function handleSubmit(e) {
@@ -27,8 +26,8 @@ function NewMaterial() {
 
   return (
     <div>
-      <h2 className="mx-4 mb-8">Add Material</h2>
-      <div className="flex justify-center">
+      <h2>Add Material</h2>
+      <div className="mx-4 flex justify-center">
         <MaterialForm handleSubmit={handleSubmit} />
       </div>
     </div>

@@ -30,7 +30,7 @@ function Index() {
   });
   return (
     <div>
-      <h2 className="mx-4 mb-8">Dashboard</h2>
+      <h2>Dashboard</h2>
 
       <div className="mx-4 mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard title="Total Materials" value={materials.length} />
@@ -48,9 +48,9 @@ function Index() {
         <Link className="button" href="/materials/new">
           + Add Material
         </Link>
-        <Link className="button" href="/import">
+        {/* <Link className="button" href="/import">
           Import CSV
-        </Link>
+        </Link> */}
         <Link className="button" href="/materials">
           View Full Inventory
         </Link>

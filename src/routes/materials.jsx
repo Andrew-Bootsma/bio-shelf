@@ -34,7 +34,7 @@ function MaterialsRoute() {
 
   return (
     <div>
-      <h2 className="mx-4 mb-8">Inventory</h2>
+      <h2>Inventory</h2>
 
       <table className="w-full">
         <thead>
@@ -55,7 +55,7 @@ function MaterialsRoute() {
       </table>
       <div className="my-4 flex items-center justify-center gap-4">
         <button
-          className="rounded bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
+          className="disabled:bg-white disabled:opacity-50"
           disabled={!materialsResponse.prev}
           onClick={() => setPage(page - 1)}
         >
@@ -63,7 +63,7 @@ function MaterialsRoute() {
         </button>
         <span>Page {page}</span>
         <button
-          className="rounded bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
+          className="disabled:bg-white disabled:opacity-50"
           disabled={!materialsResponse.next}
           onClick={() => setPage(page + 1)}
         >

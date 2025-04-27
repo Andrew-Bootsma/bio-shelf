@@ -31,7 +31,7 @@ const MaterialForm = ({ materialData, handleSubmit }) => {
 
   return (
     <form
-      className="w-1/2 border border-black p-4 align-middle"
+      className="max-w-4xl grow border border-black p-4 align-middle"
       onSubmit={handleSubmit}
     >
       <div className="form-element">
@@ -78,6 +78,7 @@ const MaterialForm = ({ materialData, handleSubmit }) => {
             required
             onChange={handleChange}
             min={0}
+            className="grow"
           />
         </div>
         <div className="form-element">

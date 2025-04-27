@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 const LowStockPreview = ({ materials }) => {
   return (
     <div className="border border-black p-4 font-mono">
-      <h2 className="mb-4 text-base uppercase">Low Stock Preview</h2>
+      <h2>Low Stock Preview</h2>
       <ul className="space-y-2">
         {materials.map((material) => (
           <li key={material.id}>
