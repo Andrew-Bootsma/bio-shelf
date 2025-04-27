@@ -15,15 +15,15 @@
     @apply p-4 text-xl uppercase;
   }
 
-  .form-element {
-    @apply mb-4 flex w-full items-center justify-between uppercase;
-  }
-
   button {
     @apply border border-black px-4 py-2 uppercase hover:bg-brand-muted;
   }
 
   .button {
     @apply border border-black px-4 py-2 uppercase hover:bg-brand-muted;
+  }
+
+  .form-element {
+    @apply mb-4 flex w-full items-center justify-between uppercase;
   }
 }
