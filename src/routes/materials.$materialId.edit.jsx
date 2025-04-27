@@ -1,4 +1,7 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { useContext } from "react";
+
+import { MaterialsContext } from "../contexts";
 import MaterialForm from "../components/MaterialForm/MaterialForm";
 
 export const Route = createFileRoute("/materials/$materialId/edit")({
@@ -9,17 +12,31 @@ function RouteComponent() {
   const { materialId } = Route.useParams();
   const router = useRouter();
 
+  const { materials, setMaterials } = useContext(MaterialsContext);
+  const material = materials.find((m) => m.id === materialId);
+
   async function handleSubmit(e) {
     e.preventDefault();
-    const material = Object.fromEntries(new FormData(e.target));
+    const updatedMaterial = Object.fromEntries(new FormData(e.target));
+
+    updatedMaterial.quantity = Number(updatedMaterial.quantity);
+    updatedMaterial.id = materialId;
+
+    console.log("Original material:", material);
+    console.log("Updated material:", updatedMaterial);
+    console.log(material === updatedMaterial);
 
     await fetch(`/api/materials/${materialId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(material),
+      body: JSON.stringify(updatedMaterial),
     });
+
+    setMaterials(
+      materials.map((m) => (m.id === materialId ? updatedMaterial : m)),
+    );
 
     router.navigate({ to: "/materials" });
   }

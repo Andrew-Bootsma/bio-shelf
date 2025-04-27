@@ -5,14 +5,14 @@ import StatCard from "../components/StatCard/StatCard";
 import LowStockPreview from "../components/LowStockPreview/LowStockPreview";
 import ExpiringSoonPreview from "../components/ExpiringSoonPreview/ExpiringSoonPreview";
 import { useMaterialStatus } from "../hooks/useMaterialStatus";
-import { MaterialContext } from "../contexts";
+import { MaterialsContext } from "../contexts";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
 });
 
 function Index() {
-  const { materials } = useContext(MaterialContext);
+  const { materials } = useContext(MaterialsContext);
 
   const lowStockMaterials = materials.filter(
     (m) => useMaterialStatus(m) === "LOW",

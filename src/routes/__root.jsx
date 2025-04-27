@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
@@ -9,10 +10,12 @@ import getMaterials from "../api/getMaterials";
 
 import Header from "../components/Header/Header";
 
-import { MaterialMetaContext, MaterialContext } from "../contexts";
+import { MaterialMetaContext, MaterialsContext } from "../contexts";
 
 export const Route = createRootRoute({
   component: () => {
+    const [materials, setMaterials] = useState([]);
+
     const { data: typesData, isLoading: typesLoading } = useQuery({
       queryKey: ["types"],
       queryFn: () => getTypes(),
@@ -31,6 +34,10 @@ export const Route = createRootRoute({
       staleTime: 1000 * 60 * 60,
     });
 
+    useEffect(() => {
+      setMaterials(materialsData ?? []);
+    }, [materialsData]);
+
     if (typesLoading || unitOptionsLoading || materialsLoading) {
       return <div className="font-mono">Loading application data...</div>;
     }
@@ -43,16 +50,12 @@ export const Route = createRootRoute({
             unitOptions: unitOptionsData ?? [],
           }}
         >
-          <MaterialContext.Provider
-            value={{
-              materials: materialsData ?? [],
-            }}
-          >
+          <MaterialsContext.Provider value={{ materials, setMaterials }}>
             <div className="font-mono">
               <Header />
               <Outlet />
             </div>
-          </MaterialContext.Provider>
+          </MaterialsContext.Provider>
         </MaterialMetaContext.Provider>
         <TanStackRouterDevtools />
         <ReactQueryDevtools />

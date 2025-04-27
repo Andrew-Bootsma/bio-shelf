@@ -1,8 +1,7 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useContext, useState } from "react";
 import { createFileRoute, Outlet, useMatches } from "@tanstack/react-router";
 
-import getMaterials from "../api/getMaterials";
+import { MaterialsContext } from "../contexts";
 
 import MaterialRow from "../components/MaterialRow/MaterialRow";
 
@@ -14,23 +13,23 @@ function MaterialsRoute() {
   const matches = useMatches();
   const isExactMaterialsRoute = matches.length === 2;
 
-  const [page, setPage] = useState(1);
-  const { data: materialsResponse, isLoading } = useQuery({
-    queryKey: ["materials", page],
-    queryFn: () => getMaterials(page),
-    staleTime: 30000,
-    enabled: isExactMaterialsRoute,
-  });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  const { materials } = useContext(MaterialsContext);
 
   if (!isExactMaterialsRoute) {
     return <Outlet />;
   }
 
-  if (isLoading) {
+  if (!materials.length) {
     return <div className="mx-4 my-8">Loading...</div>;
   }
 
-  const materials = materialsResponse.data;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentMaterials = materials.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(materials.length / itemsPerPage);
 
   return (
     <div>
@@ -48,7 +47,7 @@ function MaterialsRoute() {
           </tr>
         </thead>
         <tbody>
-          {materials.map((material) => (
+          {currentMaterials.map((material) => (
             <MaterialRow key={material.id} material={material} />
           ))}
         </tbody>
@@ -56,16 +55,16 @@ function MaterialsRoute() {
       <div className="my-4 flex items-center justify-center gap-4">
         <button
           className="disabled:bg-white disabled:opacity-50"
-          disabled={!materialsResponse.prev}
-          onClick={() => setPage(page - 1)}
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage(currentPage - 1)}
         >
           Previous
         </button>
-        <span>Page {page}</span>
+        <span>Page {currentPage}</span>
         <button
           className="disabled:bg-white disabled:opacity-50"
-          disabled={!materialsResponse.next}
-          onClick={() => setPage(page + 1)}
+          disabled={currentPage === totalPages}
+          onClick={() => setCurrentPage(currentPage + 1)}
         >
           Next
         </button>

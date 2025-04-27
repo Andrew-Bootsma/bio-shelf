@@ -15,7 +15,7 @@ import {
   faBoxes,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { MaterialContext } from "../contexts";
+import { MaterialsContext } from "../contexts";
 
 export const Route = createFileRoute("/materials/$materialId")({
   component: RouteComponent,
@@ -26,7 +26,7 @@ function RouteComponent() {
   const router = useRouter();
   const matches = useMatches();
 
-  const { materials, setMaterials } = useContext(MaterialContext);
+  const { materials, setMaterials } = useContext(MaterialsContext);
 
   const isExactDetailRoute = matches.length === 3;
   const material = materials.find((m) => m.id === materialId);
@@ -50,10 +50,12 @@ function RouteComponent() {
     const confirmed = confirm("Are you sure you want to delete this material?");
     if (!confirmed) return;
 
-    // Optionally: send DELETE request to backend here
+    await fetch(`/api/materials/${materialId}`, {
+      method: "DELETE",
+    });
 
-    // Update frontend state
     setMaterials(materials.filter((m) => m.id !== materialId));
+
     router.navigate({ to: "/materials" });
   };
 
@@ -94,7 +96,7 @@ function RouteComponent() {
           )}
 
           <div className="flex gap-4">
-            <Link href={`/inventory/${material.id}/edit`}>
+            <Link to={`/materials/$materialId/edit`} params={{ materialId }}>
               <button>Edit</button>
             </Link>
             <button onClick={handleDelete}>Delete</button>

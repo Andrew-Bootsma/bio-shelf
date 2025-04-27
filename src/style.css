@@ -12,7 +12,7 @@
   }
 
   h3 {
-    @apply p-4 text-xl uppercase text-gray-700;
+    @apply p-4 text-xl uppercase;
   }
 
   .form-element {

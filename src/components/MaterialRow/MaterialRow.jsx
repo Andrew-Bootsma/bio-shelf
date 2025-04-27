@@ -39,7 +39,7 @@ const MaterialRow = ({ material }) => {
       <td className="pl-4">
         <FontAwesomeIcon icon={icon[material.type]} />
       </td>
-      <td>{material.name}</td>
+      <td className="w-1/3">{material.name}</td>
       <td>{formattedQuantity}</td>
       <td>
         <StatusBadge material={material} />

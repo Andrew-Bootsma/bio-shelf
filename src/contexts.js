@@ -5,7 +5,4 @@ export const MaterialMetaContext = createContext({
   unitOptions: {},
 });
 
-export const MaterialContext = createContext({
-  materials: [],
-  setMaterials: () => {},
-});
+export const MaterialsContext = createContext([[], () => {}]);
