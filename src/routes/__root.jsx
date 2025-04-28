@@ -57,7 +57,7 @@ export const Route = createRootRoute({
             </div>
           </MaterialsContext.Provider>
         </MaterialMetaContext.Provider>
-        <TanStackRouterDevtools />
+        {process.env.NODE_ENV === "development" && <TanStackRouterDevtools />}
         <ReactQueryDevtools />
       </>
     );
