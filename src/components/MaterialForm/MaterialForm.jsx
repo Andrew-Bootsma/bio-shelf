@@ -29,16 +29,22 @@ const MaterialForm = ({ materialData, handleSubmit }) => {
     }));
   };
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+    handleSubmit(e, formData);
+  };
+
   return (
     <form
       className="max-w-4xl grow border border-black p-4 align-middle"
-      onSubmit={handleSubmit}
+      onSubmit={onSubmit}
     >
       <div className="form-element">
         <label htmlFor="name" className="mr-8">
           Name
         </label>
         <input
+          id="name"
           name="name"
           type="text"
           value={formData.name}
@@ -53,6 +59,7 @@ const MaterialForm = ({ materialData, handleSubmit }) => {
           Type
         </label>
         <select
+          id="type"
           name="type"
           value={formData.type}
           onChange={handleChange}
@@ -72,6 +79,7 @@ const MaterialForm = ({ materialData, handleSubmit }) => {
             Quantity
           </label>
           <input
+            id="quantity"
             name="quantity"
             type="number"
             value={formData.quantity}
@@ -86,6 +94,7 @@ const MaterialForm = ({ materialData, handleSubmit }) => {
             Unit
           </label>
           <select
+            id="unit"
             name="unit"
             value={formData.unit}
             onChange={handleChange}
@@ -105,6 +114,7 @@ const MaterialForm = ({ materialData, handleSubmit }) => {
           Location
         </label>
         <input
+          id="location"
           name="location"
           type="text"
           value={formData.location}
@@ -119,6 +129,7 @@ const MaterialForm = ({ materialData, handleSubmit }) => {
           Expiry Date
         </label>
         <input
+          id="expiryDate"
           name="expiryDate"
           type="date"
           value={formData.expiryDate}
@@ -133,6 +144,7 @@ const MaterialForm = ({ materialData, handleSubmit }) => {
           Vendor
         </label>
         <input
+          id="vendor"
           name="vendor"
           type="text"
           value={formData.vendor}
@@ -146,6 +158,7 @@ const MaterialForm = ({ materialData, handleSubmit }) => {
           Description
         </label>
         <textarea
+          id="description"
           name="description"
           value={formData.description}
           onChange={handleChange}
@@ -158,6 +171,7 @@ const MaterialForm = ({ materialData, handleSubmit }) => {
           Notes
         </label>
         <textarea
+          id="notes"
           name="notes"
           value={formData.notes}
           onChange={handleChange}

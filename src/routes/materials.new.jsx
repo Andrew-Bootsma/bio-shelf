@@ -9,9 +9,10 @@ export const Route = createFileRoute("/materials/new")({
 function NewMaterial() {
   const router = useRouter();
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e, formData) {
     e.preventDefault();
-    const material = Object.fromEntries(new FormData(e.target));
+    const material = { ...formData };
+    material.quantity = Number(material.quantity);
 
     await fetch("/api/materials", {
       method: "POST",
