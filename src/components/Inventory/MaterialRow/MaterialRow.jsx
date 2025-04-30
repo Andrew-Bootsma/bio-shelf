@@ -10,7 +10,7 @@ import {
 
 import StatusBadge from "./StatusBadge/StatusBadge";
 
-import { useFormatUnits } from "../../hooks/useFormatUnits";
+import { useFormatUnits } from "../../../hooks/useFormatUnits";
 
 const MaterialRow = ({ material }) => {
   const navigate = useNavigate();

@@ -3,7 +3,7 @@ import { createFileRoute, Outlet, useMatches } from "@tanstack/react-router";
 
 import { MaterialsContext } from "../contexts";
 
-import MaterialRow from "../components/MaterialRow/MaterialRow";
+import Inventory from "../components/Inventory/Inventory";
 
 export const Route = createFileRoute("/materials")({
   component: MaterialsRoute,
@@ -32,43 +32,11 @@ function MaterialsRoute() {
   const totalPages = Math.ceil(materials.length / itemsPerPage);
 
   return (
-    <div>
-      <h2>Inventory</h2>
-
-      <table className="w-full">
-        <thead>
-          <tr className="text-left uppercase">
-            <th className="pl-4"></th>
-            <th>Name</th>
-            <th>Qty</th>
-            <th>Status</th>
-            <th>Expires</th>
-            <th>Location</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentMaterials.map((material) => (
-            <MaterialRow key={material.id} material={material} />
-          ))}
-        </tbody>
-      </table>
-      <div className="my-4 flex items-center justify-center gap-4">
-        <button
-          className="disabled:bg-white disabled:opacity-50"
-          disabled={currentPage === 1}
-          onClick={() => setCurrentPage(currentPage - 1)}
-        >
-          Previous
-        </button>
-        <span>Page {currentPage}</span>
-        <button
-          className="disabled:bg-white disabled:opacity-50"
-          disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage(currentPage + 1)}
-        >
-          Next
-        </button>
-      </div>
-    </div>
+    <Inventory
+      currentMaterials={currentMaterials}
+      currentPage={currentPage}
+      setCurrentPage={setCurrentPage}
+      totalPages={totalPages}
+    />
   );
 }
