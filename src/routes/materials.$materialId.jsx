@@ -1,21 +1,14 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   createFileRoute,
-  Link,
   Outlet,
   useMatches,
   useRouter,
 } from "@tanstack/react-router";
 import { useContext } from "react";
 
-import {
-  faFlask,
-  faVial,
-  faTools,
-  faBoxes,
-} from "@fortawesome/free-solid-svg-icons";
-
 import { MaterialsContext } from "../contexts";
+
+import Material from "../components/Material/Material";
 
 export const Route = createFileRoute("/materials/$materialId")({
   component: RouteComponent,
@@ -30,13 +23,6 @@ function RouteComponent() {
 
   const isExactDetailRoute = matches.length === 3;
   const material = materials.find((m) => m.id === materialId);
-
-  const icon = {
-    reagent: faFlask,
-    consumable: faBoxes,
-    sample: faVial,
-    equipment: faTools,
-  };
 
   if (!isExactDetailRoute) {
     return <Outlet />;
@@ -59,50 +45,5 @@ function RouteComponent() {
     router.navigate({ to: "/materials" });
   };
 
-  const DetailField = ({ label, value }) => {
-    return (
-      <div className="flex justify-between border-b border-black">
-        <h3>{label}</h3>
-        <h3>{value}</h3>
-      </div>
-    );
-  };
-
-  return (
-    <div>
-      <h2>
-        <FontAwesomeIcon icon={icon[material.type]} /> {material.name}
-      </h2>
-
-      <div className="m-4 flex justify-center">
-        <div className="max-w-4xl grow">
-          <DetailField label="Type" value={material.type} />
-          <DetailField
-            label="Quantity"
-            value={`${material.quantity} ${material.unit}`}
-          />
-          <DetailField label="Location" value={material.location} />
-          <DetailField label="Vendor" value={material.vendor || "—"} />
-          <DetailField label="Expiry Date" value={material.expiryDate || "—"} />
-
-          <h3 className="mb-2">Description</h3>
-          <p className="mb-4 ml-2">{material.description || "—"}</p>
-
-          {material.notes && (
-            <div className="mb-16 border-t border-black">
-              <h3 className="mb-2">Notes</h3>
-              <p className="ml-2">{material.notes}</p>
-            </div>
-          )}
-
-          <div className="flex gap-4">
-            <Link to={`/materials/$materialId/edit`} params={{ materialId }}>
-              <button>Edit</button>
-            </Link>
-            <button onClick={handleDelete}>Delete</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <Material material={material} handleDelete={handleDelete} />;
 }
