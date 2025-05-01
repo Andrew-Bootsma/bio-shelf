@@ -9,7 +9,7 @@ const StatusBadge = ({ material }) => {
 
   const color = {
     LOW: "text-red-600",
-    OK: "text-black",
+    IN_STOCK: "text-black",
     EXPIRED: "text-yellow-700",
   }[status];
 
@@ -17,7 +17,7 @@ const StatusBadge = ({ material }) => {
     <span
       className={`border border-black px-2 py-0.5 text-xs uppercase ${color}`}
     >
-      {status}
+      {status.replace("_", " ")}
     </span>
   );
 };

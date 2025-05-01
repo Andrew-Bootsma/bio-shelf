@@ -1,4 +1,4 @@
-export const DetailField = ({ label, value }) => {
+const DetailField = ({ label, value }) => {
   return (
     <div className="flex justify-between border-b border-black">
       <h3>{label}</h3>
@@ -6,3 +6,5 @@ export const DetailField = ({ label, value }) => {
     </div>
   );
 };
+
+export default DetailField;

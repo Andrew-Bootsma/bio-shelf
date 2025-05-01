@@ -8,7 +8,7 @@ import {
   faBoxes,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { DetailField } from "./DetailField/DetailField";
+import DetailField from "./DetailField/DetailField";
 
 const Material = ({ material, handleDelete }) => {
   const icon = {

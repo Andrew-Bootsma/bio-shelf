@@ -15,5 +15,5 @@ export const useMaterialStatus = (material) => {
 
   if (isExpired) return "EXPIRED";
   if (isLow) return "LOW";
-  return "IN STOCK";
+  return "IN_STOCK";
 };

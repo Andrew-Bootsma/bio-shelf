@@ -16,7 +16,7 @@ test("should return IN STOCK for material with sufficient quantity", () => {
   };
 
   const { result } = renderHook(() => useMaterialStatus(testMaterial));
-  expect(result.current).toBe("IN STOCK");
+  expect(result.current).toBe("IN_STOCK");
 });
 
 test("should return LOW for material with quantity below threshold", () => {
@@ -82,7 +82,7 @@ test("should use correct threshold based on material type", () => {
   const { result: consumableResult } = renderHook(() =>
     useMaterialStatus(consumableAtThreshold),
   );
-  expect(consumableResult.current).toBe("IN STOCK");
+  expect(consumableResult.current).toBe("IN_STOCK");
 
   // Test consumable below threshold
   const consumableBelowThreshold = {
