@@ -10,6 +10,8 @@ import {
 
 import DetailField from "./DetailField/DetailField";
 
+import { useFormatUnits } from "../../hooks/useFormatUnits/useFormatUnits";
+
 const Material = ({ material, handleDelete }) => {
   const icon = {
     reagent: faFlask,
@@ -17,6 +19,8 @@ const Material = ({ material, handleDelete }) => {
     sample: faVial,
     equipment: faTools,
   };
+
+  const formattedQuantity = useFormatUnits(material.quantity, material.unit);
 
   return (
     <div>
@@ -27,10 +31,7 @@ const Material = ({ material, handleDelete }) => {
       <div className="m-4 flex justify-center">
         <div className="max-w-4xl grow">
           <DetailField label="Type" value={material.type} />
-          <DetailField
-            label="Quantity"
-            value={`${material.quantity} ${material.unit}`}
-          />
+          <DetailField label="Quantity" value={formattedQuantity} />
           <DetailField label="Location" value={material.location} />
           <DetailField label="Vendor" value={material.vendor || "—"} />
           <DetailField label="Expiry Date" value={material.expiryDate || "—"} />
