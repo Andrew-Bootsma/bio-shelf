@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { createLazyFileRoute } from "@tanstack/react-router";
 
-import { useMaterialStatus } from "../hooks/useMaterialStatus";
+import { useMaterialStatus } from "../hooks/useMaterialStatus/useMaterialStatus";
 import { MaterialsContext } from "../contexts";
 
 import Dashboard from "../components/Dashboard/Dashboard";

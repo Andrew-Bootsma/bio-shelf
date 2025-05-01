@@ -1,4 +1,4 @@
-import { useMaterialStatus } from "../../../../hooks/useMaterialStatus";
+import { useMaterialStatus } from "../../../../hooks/useMaterialStatus/useMaterialStatus";
 
 const StatusBadge = ({ material }) => {
   if (material.type === "equipment") {
