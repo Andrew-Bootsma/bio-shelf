@@ -13,22 +13,26 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as MaterialsImport } from './routes/materials'
-import { Route as MaterialsNewImport } from './routes/materials.new'
-import { Route as MaterialsMaterialIdImport } from './routes/materials.$materialId'
-import { Route as MaterialsMaterialIdEditImport } from './routes/materials.$materialId.edit'
 
 // Create Virtual Routes
 
+const MaterialsLazyImport = createFileRoute('/materials')()
 const IndexLazyImport = createFileRoute('/')()
+const MaterialsNewLazyImport = createFileRoute('/materials/new')()
+const MaterialsMaterialIdLazyImport = createFileRoute(
+  '/materials/$materialId',
+)()
+const MaterialsMaterialIdEditLazyImport = createFileRoute(
+  '/materials/$materialId/edit',
+)()
 
 // Create/Update Routes
 
-const MaterialsRoute = MaterialsImport.update({
+const MaterialsLazyRoute = MaterialsLazyImport.update({
   id: '/materials',
   path: '/materials',
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() => import('./routes/materials.lazy').then((d) => d.Route))
 
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
@@ -36,23 +40,28 @@ const IndexLazyRoute = IndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
-const MaterialsNewRoute = MaterialsNewImport.update({
+const MaterialsNewLazyRoute = MaterialsNewLazyImport.update({
   id: '/new',
   path: '/new',
-  getParentRoute: () => MaterialsRoute,
-} as any)
+  getParentRoute: () => MaterialsLazyRoute,
+} as any).lazy(() => import('./routes/materials.new.lazy').then((d) => d.Route))
 
-const MaterialsMaterialIdRoute = MaterialsMaterialIdImport.update({
+const MaterialsMaterialIdLazyRoute = MaterialsMaterialIdLazyImport.update({
   id: '/$materialId',
   path: '/$materialId',
-  getParentRoute: () => MaterialsRoute,
-} as any)
+  getParentRoute: () => MaterialsLazyRoute,
+} as any).lazy(() =>
+  import('./routes/materials.$materialId.lazy').then((d) => d.Route),
+)
 
-const MaterialsMaterialIdEditRoute = MaterialsMaterialIdEditImport.update({
-  id: '/edit',
-  path: '/edit',
-  getParentRoute: () => MaterialsMaterialIdRoute,
-} as any)
+const MaterialsMaterialIdEditLazyRoute =
+  MaterialsMaterialIdEditLazyImport.update({
+    id: '/edit',
+    path: '/edit',
+    getParentRoute: () => MaterialsMaterialIdLazyRoute,
+  } as any).lazy(() =>
+    import('./routes/materials.$materialId.edit.lazy').then((d) => d.Route),
+  )
 
 // Populate the FileRoutesByPath interface
 
@@ -69,83 +78,86 @@ declare module '@tanstack/react-router' {
       id: '/materials'
       path: '/materials'
       fullPath: '/materials'
-      preLoaderRoute: typeof MaterialsImport
+      preLoaderRoute: typeof MaterialsLazyImport
       parentRoute: typeof rootRoute
     }
     '/materials/$materialId': {
       id: '/materials/$materialId'
       path: '/$materialId'
       fullPath: '/materials/$materialId'
-      preLoaderRoute: typeof MaterialsMaterialIdImport
-      parentRoute: typeof MaterialsImport
+      preLoaderRoute: typeof MaterialsMaterialIdLazyImport
+      parentRoute: typeof MaterialsLazyImport
     }
     '/materials/new': {
       id: '/materials/new'
       path: '/new'
       fullPath: '/materials/new'
-      preLoaderRoute: typeof MaterialsNewImport
-      parentRoute: typeof MaterialsImport
+      preLoaderRoute: typeof MaterialsNewLazyImport
+      parentRoute: typeof MaterialsLazyImport
     }
     '/materials/$materialId/edit': {
       id: '/materials/$materialId/edit'
       path: '/edit'
       fullPath: '/materials/$materialId/edit'
-      preLoaderRoute: typeof MaterialsMaterialIdEditImport
-      parentRoute: typeof MaterialsMaterialIdImport
+      preLoaderRoute: typeof MaterialsMaterialIdEditLazyImport
+      parentRoute: typeof MaterialsMaterialIdLazyImport
     }
   }
 }
 
 // Create and export the route tree
 
-interface MaterialsMaterialIdRouteChildren {
-  MaterialsMaterialIdEditRoute: typeof MaterialsMaterialIdEditRoute
+interface MaterialsMaterialIdLazyRouteChildren {
+  MaterialsMaterialIdEditLazyRoute: typeof MaterialsMaterialIdEditLazyRoute
 }
 
-const MaterialsMaterialIdRouteChildren: MaterialsMaterialIdRouteChildren = {
-  MaterialsMaterialIdEditRoute: MaterialsMaterialIdEditRoute,
+const MaterialsMaterialIdLazyRouteChildren: MaterialsMaterialIdLazyRouteChildren =
+  {
+    MaterialsMaterialIdEditLazyRoute: MaterialsMaterialIdEditLazyRoute,
+  }
+
+const MaterialsMaterialIdLazyRouteWithChildren =
+  MaterialsMaterialIdLazyRoute._addFileChildren(
+    MaterialsMaterialIdLazyRouteChildren,
+  )
+
+interface MaterialsLazyRouteChildren {
+  MaterialsMaterialIdLazyRoute: typeof MaterialsMaterialIdLazyRouteWithChildren
+  MaterialsNewLazyRoute: typeof MaterialsNewLazyRoute
 }
 
-const MaterialsMaterialIdRouteWithChildren =
-  MaterialsMaterialIdRoute._addFileChildren(MaterialsMaterialIdRouteChildren)
-
-interface MaterialsRouteChildren {
-  MaterialsMaterialIdRoute: typeof MaterialsMaterialIdRouteWithChildren
-  MaterialsNewRoute: typeof MaterialsNewRoute
+const MaterialsLazyRouteChildren: MaterialsLazyRouteChildren = {
+  MaterialsMaterialIdLazyRoute: MaterialsMaterialIdLazyRouteWithChildren,
+  MaterialsNewLazyRoute: MaterialsNewLazyRoute,
 }
 
-const MaterialsRouteChildren: MaterialsRouteChildren = {
-  MaterialsMaterialIdRoute: MaterialsMaterialIdRouteWithChildren,
-  MaterialsNewRoute: MaterialsNewRoute,
-}
-
-const MaterialsRouteWithChildren = MaterialsRoute._addFileChildren(
-  MaterialsRouteChildren,
+const MaterialsLazyRouteWithChildren = MaterialsLazyRoute._addFileChildren(
+  MaterialsLazyRouteChildren,
 )
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
-  '/materials': typeof MaterialsRouteWithChildren
-  '/materials/$materialId': typeof MaterialsMaterialIdRouteWithChildren
-  '/materials/new': typeof MaterialsNewRoute
-  '/materials/$materialId/edit': typeof MaterialsMaterialIdEditRoute
+  '/materials': typeof MaterialsLazyRouteWithChildren
+  '/materials/$materialId': typeof MaterialsMaterialIdLazyRouteWithChildren
+  '/materials/new': typeof MaterialsNewLazyRoute
+  '/materials/$materialId/edit': typeof MaterialsMaterialIdEditLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
-  '/materials': typeof MaterialsRouteWithChildren
-  '/materials/$materialId': typeof MaterialsMaterialIdRouteWithChildren
-  '/materials/new': typeof MaterialsNewRoute
-  '/materials/$materialId/edit': typeof MaterialsMaterialIdEditRoute
+  '/materials': typeof MaterialsLazyRouteWithChildren
+  '/materials/$materialId': typeof MaterialsMaterialIdLazyRouteWithChildren
+  '/materials/new': typeof MaterialsNewLazyRoute
+  '/materials/$materialId/edit': typeof MaterialsMaterialIdEditLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
-  '/materials': typeof MaterialsRouteWithChildren
-  '/materials/$materialId': typeof MaterialsMaterialIdRouteWithChildren
-  '/materials/new': typeof MaterialsNewRoute
-  '/materials/$materialId/edit': typeof MaterialsMaterialIdEditRoute
+  '/materials': typeof MaterialsLazyRouteWithChildren
+  '/materials/$materialId': typeof MaterialsMaterialIdLazyRouteWithChildren
+  '/materials/new': typeof MaterialsNewLazyRoute
+  '/materials/$materialId/edit': typeof MaterialsMaterialIdEditLazyRoute
 }
 
 export interface FileRouteTypes {
@@ -175,12 +187,12 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
-  MaterialsRoute: typeof MaterialsRouteWithChildren
+  MaterialsLazyRoute: typeof MaterialsLazyRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
-  MaterialsRoute: MaterialsRouteWithChildren,
+  MaterialsLazyRoute: MaterialsLazyRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -201,25 +213,25 @@ export const routeTree = rootRoute
       "filePath": "index.lazy.jsx"
     },
     "/materials": {
-      "filePath": "materials.jsx",
+      "filePath": "materials.lazy.jsx",
       "children": [
         "/materials/$materialId",
         "/materials/new"
       ]
     },
     "/materials/$materialId": {
-      "filePath": "materials.$materialId.jsx",
+      "filePath": "materials.$materialId.lazy.jsx",
       "parent": "/materials",
       "children": [
         "/materials/$materialId/edit"
       ]
     },
     "/materials/new": {
-      "filePath": "materials.new.jsx",
+      "filePath": "materials.new.lazy.jsx",
       "parent": "/materials"
     },
     "/materials/$materialId/edit": {
-      "filePath": "materials.$materialId.edit.jsx",
+      "filePath": "materials.$materialId.edit.lazy.jsx",
       "parent": "/materials/$materialId"
     }
   }

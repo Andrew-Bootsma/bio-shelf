@@ -1,10 +1,10 @@
-import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createLazyFileRoute, useRouter } from "@tanstack/react-router";
 import { useContext } from "react";
 
 import { MaterialsContext } from "../contexts";
 import MaterialForm from "../components/MaterialForm/MaterialForm";
 
-export const Route = createFileRoute("/materials/$materialId/edit")({
+export const Route = createLazyFileRoute("/materials/$materialId/edit")({
   component: RouteComponent,
 });
 

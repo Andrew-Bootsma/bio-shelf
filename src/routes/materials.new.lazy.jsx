@@ -1,8 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute } from "@tanstack/react-router";
 import { useRouter } from "@tanstack/react-router";
 import MaterialForm from "../components/MaterialForm/MaterialForm";
 
-export const Route = createFileRoute("/materials/new")({
+export const Route = createLazyFileRoute("/materials/new")({
   component: NewMaterial,
 });
 

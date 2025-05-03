@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
-import { createFileRoute, Outlet, useMatches } from "@tanstack/react-router";
+import { createLazyFileRoute, Outlet, useMatches } from "@tanstack/react-router";
 
 import { MaterialsContext } from "../contexts";
 
 import Inventory from "../components/Inventory/Inventory";
 
-export const Route = createFileRoute("/materials")({
+export const Route = createLazyFileRoute("/materials")({
   component: MaterialsRoute,
 });
 
