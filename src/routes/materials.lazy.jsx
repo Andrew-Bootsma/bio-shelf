@@ -1,5 +1,9 @@
 import { useContext, useState } from "react";
-import { createLazyFileRoute, Outlet, useMatches } from "@tanstack/react-router";
+import {
+  createLazyFileRoute,
+  Outlet,
+  useMatches,
+} from "@tanstack/react-router";
 
 import { MaterialsContext } from "../contexts";
 
