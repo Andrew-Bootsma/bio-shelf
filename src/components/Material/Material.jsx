@@ -50,8 +50,9 @@ const Material = ({ material, handleDelete }) => {
             <Link
               to={`/materials/$materialId/edit`}
               params={{ materialId: material.id }}
+              className="button"
             >
-              <button>Edit</button>
+              Edit
             </Link>
             <button onClick={handleDelete}>Delete</button>
           </div>

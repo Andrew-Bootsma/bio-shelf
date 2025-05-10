@@ -8,7 +8,7 @@ const ExpiringSoonPreview = ({ materials }) => {
         {materials.map((material) => (
           <li key={material.id}>
             <Link
-              href={`/materials/$materialId`}
+              to={`/materials/$materialId`}
               params={{ materialId: material.id }}
               className="underline"
             >

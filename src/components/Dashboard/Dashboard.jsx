@@ -27,13 +27,13 @@ const Dashboard = ({
       </div>
 
       <div className="mx-4 mb-8 flex flex-wrap gap-4">
-        <Link className="button" href="/materials/new">
+        <Link className="button" to="/materials/new">
           + Add Material
         </Link>
-        {/* <Link className="button" href="/import">
+        {/* <Link className="button" to="/import">
           Import CSV
         </Link> */}
-        <Link className="button" href="/materials">
+        <Link className="button" to="/materials">
           View Full Inventory
         </Link>
       </div>
