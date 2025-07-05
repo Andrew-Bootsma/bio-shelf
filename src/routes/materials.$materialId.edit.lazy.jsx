@@ -22,10 +22,6 @@ function RouteComponent() {
     updatedMaterial.quantity = Number(updatedMaterial.quantity);
     updatedMaterial.id = materialId;
 
-    console.log("Original material:", material);
-    console.log("Updated material:", updatedMaterial);
-    console.log(material === updatedMaterial);
-
     await fetch(`/api/materials/${materialId}`, {
       method: "PUT",
       headers: {

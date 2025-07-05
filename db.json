@@ -14,10 +14,32 @@
     }
   ],
   "unitOptions": {
-    "reagent": ["mL", "µL", "g", "mg", "units"],
-    "sample": ["vials", "tubes", "slides", "µg", "samples"],
-    "equipment": ["unit", "set", "piece"],
-    "consumable": ["pcs", "boxes", "packs", "sheets", "strips"]
+    "reagent": [
+      "mL",
+      "µL",
+      "g",
+      "mg",
+      "units"
+    ],
+    "sample": [
+      "vials",
+      "tubes",
+      "slides",
+      "µg",
+      "samples"
+    ],
+    "equipment": [
+      "unit",
+      "set",
+      "piece"
+    ],
+    "consumable": [
+      "pcs",
+      "boxes",
+      "packs",
+      "sheets",
+      "strips"
+    ]
   },
   "materials": [
     {
@@ -1146,6 +1168,30 @@
       "expiryDate": null,
       "vendor": "Invitrogen",
       "description": "Used to cast gels for nucleic acid electrophoresis.",
+      "notes": ""
+    },
+    {
+      "id": "7332",
+      "name": "Breast milk",
+      "type": "sample",
+      "quantity": "1",
+      "unit": "",
+      "location": "Fridge B",
+      "expiryDate": "2025-07-08",
+      "vendor": "Mama milker",
+      "description": "Fresh as fresh can be",
+      "notes": ""
+    },
+    {
+      "id": "5b44",
+      "name": "Test tubes",
+      "type": "equipment",
+      "quantity": "82",
+      "unit": "",
+      "location": "Cupboard 7",
+      "expiryDate": "",
+      "vendor": "Walmart",
+      "description": "Glass test tubes",
       "notes": ""
     }
   ]

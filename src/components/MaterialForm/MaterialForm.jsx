@@ -1,8 +1,25 @@
 import { useContext, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "@tanstack/react-router";
+import { MaterialMetaContext, MaterialsContext } from "../../contexts";
+import postMaterial from "../../api/postMaterial";
 
-import { MaterialMetaContext } from "../../contexts";
+const MaterialForm = ({ materialData }) => {
+  const router = useRouter();
+  const { materials, setMaterials } = useContext(MaterialsContext);
 
-const MaterialForm = ({ materialData, handleSubmit }) => {
+  const mutation = useMutation({
+    mutationFn: function (e) {
+      e.preventDefault();
+
+      return postMaterial(formData);
+    },
+    onSuccess: (newMaterial) => {
+      setMaterials([...materials, newMaterial]);
+      router.navigate({ to: "/materials" });
+    },
+  });
+
   const [formData, setFormData] = useState({
     name: materialData?.name ?? "",
     type: materialData?.type ?? "reagent",
@@ -29,15 +46,10 @@ const MaterialForm = ({ materialData, handleSubmit }) => {
     }));
   };
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    handleSubmit(e, formData);
-  };
-
   return (
     <form
       className="max-w-4xl grow border border-black p-4 align-middle"
-      onSubmit={onSubmit}
+      onSubmit={(e) => mutation.mutate(e)}
     >
       <div className="form-element">
         <label htmlFor="name" className="mr-8">
