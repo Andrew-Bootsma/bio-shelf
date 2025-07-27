@@ -1,0 +1,18 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`StatCard snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="shadow-hard border border-black p-4 font-mono"
+  >
+    <h2>
+      Total Materials
+    </h2>
+    <p
+      class="text-center text-2xl"
+    >
+      10
+    </p>
+  </div>
+</DocumentFragment>
+`;

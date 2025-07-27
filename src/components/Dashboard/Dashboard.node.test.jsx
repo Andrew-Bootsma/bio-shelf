@@ -8,9 +8,9 @@ afterEach(() => {
 });
 
 vi.mock("@tanstack/react-router", () => ({
-  Link: ({ children, className, href }) => {
+  Link: ({ children, className, to }) => {
     const testId =
-      href === "/materials/new" || href === "/materials"
+      to === "/materials/new" || to === "/materials"
         ? "action-link"
         : "material-link";
 
@@ -21,6 +21,19 @@ vi.mock("@tanstack/react-router", () => ({
     );
   },
 }));
+
+test("Dashboard snapshot", () => {
+  const { asFragment } = render(
+    <Dashboard
+      materials={[]}
+      lowStockMaterials={[]}
+      expiringMaterials={[]}
+      expiredMaterials={[]}
+    />,
+  );
+
+  expect(asFragment()).toMatchSnapshot();
+});
 
 test("renders dashboard with all components", () => {
   const mockData = {

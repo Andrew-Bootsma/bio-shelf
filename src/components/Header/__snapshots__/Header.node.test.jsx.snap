@@ -1,0 +1,13 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Header snapshot 1`] = `
+<DocumentFragment>
+  <nav>
+    <h1
+      class="mx-4 mt-4"
+    >
+      BioShelf
+    </h1>
+  </nav>
+</DocumentFragment>
+`;

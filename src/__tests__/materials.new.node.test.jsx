@@ -1,9 +1,9 @@
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
 import { vi, test, expect } from "vitest";
 import createFetchMock from "vitest-fetch-mock";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MaterialMetaContext } from "../contexts";
-import { Route } from "../routes/materials.new";
+import { MaterialMetaContext, MaterialsContext } from "../contexts";
+import { Route } from "../routes/materials.new.lazy";
 
 const mockNavigate = vi.fn();
 vi.mock(import("@tanstack/react-router"), async (importOriginal) => {
@@ -22,18 +22,40 @@ const fetchMocker = createFetchMock(vi);
 fetchMocker.enableMocks();
 
 test("can add a new material", async () => {
-  fetchMocker.mockResponse(JSON.stringify({ status: "ok" }));
+  const testData = {
+    name: "Test Material",
+    type: "reagent",
+    quantity: "10",
+    unit: "mL",
+    location: "Test Location",
+    expiryDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .split("T")[0],
+    vendor: "Test Vendor",
+    description: "Test Description",
+    notes: "Test Notes",
+  };
 
-  const contextValue = {
+  fetchMocker.mockResponse(JSON.stringify({ id: "123", ...testData }));
+
+  const metaContextValue = {
     types: [{ id: "reagent" }],
     unitOptions: { reagent: ["mL", "g"] },
   };
 
+  const mockSetMaterials = vi.fn();
+  const materialsContextValue = {
+    materials: [],
+    setMaterials: mockSetMaterials,
+  };
+
   const screen = render(
-    <MaterialMetaContext.Provider value={contextValue}>
-      <QueryClientProvider client={queryClient}>
-        <Route.options.component />
-      </QueryClientProvider>
+    <MaterialMetaContext.Provider value={metaContextValue}>
+      <MaterialsContext.Provider value={materialsContextValue}>
+        <QueryClientProvider client={queryClient}>
+          <Route.options.component />
+        </QueryClientProvider>
+      </MaterialsContext.Provider>
     </MaterialMetaContext.Provider>,
   );
 
@@ -46,20 +68,6 @@ test("can add a new material", async () => {
   const vendorInput = screen.getByLabelText("Vendor");
   const descriptionInput = screen.getByLabelText("Description");
   const notesInput = screen.getByLabelText("Notes");
-
-  const testData = {
-    name: "Test Material",
-    type: "reagent",
-    quantity: 10,
-    unit: "mL",
-    location: "Test Location",
-    expiryDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000)
-      .toISOString()
-      .split("T")[0],
-    vendor: "Test Vendor",
-    description: "Test Description",
-    notes: "Test Notes",
-  };
 
   fireEvent.change(nameInput, { target: { value: testData.name } });
   fireEvent.change(typeInput, { target: { value: testData.type } });
@@ -76,18 +84,22 @@ test("can add a new material", async () => {
   const btn = screen.getByRole("button", { name: "Add" });
   btn.click();
 
-  await vi.waitFor(() => {
+  await waitFor(() => {
     const requests = fetchMocker.requests();
     expect(requests.length).toBe(1);
     expect(requests[0].url).toBe("/api/materials");
-    expect(fetchMocker).toHaveBeenCalledWith("/api/materials", {
-      body: JSON.stringify(testData),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-    });
+  });
 
+  expect(fetchMocker).toHaveBeenCalledWith("/api/materials", {
+    body: JSON.stringify(testData),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+  });
+
+  await waitFor(() => {
+    expect(mockSetMaterials).toHaveBeenCalledWith([{ id: "123", ...testData }]);
     expect(mockNavigate).toHaveBeenCalledWith({ to: "/materials" });
   });
 });

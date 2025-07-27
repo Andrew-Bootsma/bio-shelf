@@ -1,3 +1,5 @@
+// snapshot test
+
 const StatCard = ({ title, value }) => {
   return (
     <div className="shadow-hard border border-black p-4 font-mono">

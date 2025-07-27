@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`StatusBadge snapshot 1`] = `
+<DocumentFragment>
+  <span
+    class="border border-black px-2 py-0.5 text-xs uppercase text-red-600"
+  >
+    LOW
+  </span>
+</DocumentFragment>
+`;

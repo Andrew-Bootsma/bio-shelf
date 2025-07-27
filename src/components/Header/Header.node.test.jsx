@@ -9,6 +9,11 @@ vi.mock("@tanstack/react-router", () => ({
 
 afterEach(cleanup);
 
+test("Header snapshot", () => {
+  const { asFragment } = render(<Header />);
+  expect(asFragment()).toMatchSnapshot();
+});
+
 test("renders the header", () => {
   const screen = render(<Header />);
   expect(screen.getByText("BioShelf")).toBeDefined();

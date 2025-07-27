@@ -1,3 +1,5 @@
+// snapshot test
+
 import { useMaterialStatus } from "../../../../hooks/useMaterialStatus/useMaterialStatus";
 
 const StatusBadge = ({ material }) => {

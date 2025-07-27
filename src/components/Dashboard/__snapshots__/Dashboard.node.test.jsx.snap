@@ -1,0 +1,103 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Dashboard snapshot 1`] = `
+<DocumentFragment>
+  <div>
+    <h2>
+      Dashboard
+    </h2>
+    <div
+      class="mx-4 mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+    >
+      <div
+        class="shadow-hard border border-black p-4 font-mono"
+      >
+        <h2>
+          Total Materials
+        </h2>
+        <p
+          class="text-center text-2xl"
+        >
+          0
+        </p>
+      </div>
+      <div
+        class="shadow-hard border border-black p-4 font-mono"
+      >
+        <h2>
+          Low Stock
+        </h2>
+        <p
+          class="text-center text-2xl"
+        >
+          0
+        </p>
+      </div>
+      <div
+        class="shadow-hard border border-black p-4 font-mono"
+      >
+        <h2>
+          Expiring Soon
+        </h2>
+        <p
+          class="text-center text-2xl"
+        >
+          0
+        </p>
+      </div>
+      <div
+        class="shadow-hard border border-black p-4 font-mono"
+      >
+        <h2>
+          Expired
+        </h2>
+        <p
+          class="text-center text-2xl"
+        >
+          0
+        </p>
+      </div>
+    </div>
+    <div
+      class="mx-4 mb-8 grid grid-cols-1 gap-6 md:grid-cols-2"
+    >
+      <div
+        class="border border-black p-4 font-mono"
+      >
+        <h2>
+          Low Stock Preview
+        </h2>
+        <ul
+          class="space-y-2"
+        />
+      </div>
+      <div
+        class="border border-black p-4 font-mono"
+      >
+        <h2>
+          Expiring Soon Preview
+        </h2>
+        <ul
+          class="space-y-2"
+        />
+      </div>
+    </div>
+    <div
+      class="mx-4 mb-8 flex flex-wrap gap-4"
+    >
+      <div
+        class="button"
+        data-testid="action-link"
+      >
+        + Add Material
+      </div>
+      <div
+        class="button"
+        data-testid="action-link"
+      >
+        View Full Inventory
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

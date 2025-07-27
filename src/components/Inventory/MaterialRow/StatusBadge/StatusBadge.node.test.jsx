@@ -14,6 +14,20 @@ vi.mock("../../../../hooks/useMaterialStatus/useMaterialStatus", () => ({
   useMaterialStatus: vi.fn(),
 }));
 
+test("StatusBadge snapshot", () => {
+  const material = {
+    type: "reagent",
+    name: "Test Material",
+    quantity: 10,
+  };
+
+  useMaterialStatus.mockReturnValue("LOW");
+
+  const { asFragment } = render(<StatusBadge material={material} />);
+
+  expect(asFragment()).toMatchSnapshot();
+});
+
 test("renders a dash for equipment type", () => {
   const equipment = {
     type: "equipment",
