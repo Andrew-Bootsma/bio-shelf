@@ -1,6 +1,6 @@
 import { expect, test, describe, vi, beforeEach } from "vitest";
 import createFetchMock from "vitest-fetch-mock";
-import getUnitOptions from "../getUnitOptions";
+import getUnitOptions from "./getUnitOptions";
 
 const fetchMocker = createFetchMock(vi);
 
