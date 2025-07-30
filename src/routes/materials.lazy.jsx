@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { use, useState } from "react";
 import {
   createLazyFileRoute,
   Outlet,
@@ -20,7 +20,7 @@ function MaterialsRoute() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  const { materials } = useContext(MaterialsContext);
+  const { materials } = use(MaterialsContext);
 
   if (!isExactMaterialsRoute) {
     return <Outlet />;

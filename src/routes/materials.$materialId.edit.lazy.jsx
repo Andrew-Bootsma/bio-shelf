@@ -1,5 +1,5 @@
 import { createLazyFileRoute, useRouter } from "@tanstack/react-router";
-import { useContext } from "react";
+import { use } from "react";
 
 import { MaterialsContext } from "../contexts";
 import MaterialForm from "../components/MaterialForm/MaterialForm";
@@ -12,7 +12,7 @@ function RouteComponent() {
   const { materialId } = Route.useParams();
   const router = useRouter();
 
-  const { materials, setMaterials } = useContext(MaterialsContext);
+  const { materials, setMaterials } = use(MaterialsContext);
   const material = materials.find((m) => m.id === materialId);
 
   async function handleSubmit(e) {

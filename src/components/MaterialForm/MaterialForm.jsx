@@ -1,4 +1,4 @@
-import { useContext, useOptimistic, useActionState, useState } from "react";
+import { use, useOptimistic, useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { useRouter } from "@tanstack/react-router";
 import { MaterialMetaContext, MaterialsContext } from "../../contexts";
@@ -24,8 +24,8 @@ function FormStatus() {
 
 const MaterialForm = ({ materialData }) => {
   const router = useRouter();
-  const { materials, setMaterials } = useContext(MaterialsContext);
-  const { types, unitOptions } = useContext(MaterialMetaContext);
+  const { materials, setMaterials } = use(MaterialsContext);
+  const { types, unitOptions } = use(MaterialMetaContext);
 
   // State for reactive unit options
   const [selectedType, setSelectedType] = useState(

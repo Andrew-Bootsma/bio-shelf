@@ -4,7 +4,7 @@ import {
   useMatches,
   useRouter,
 } from "@tanstack/react-router";
-import { useContext, useState } from "react";
+import { use, useState } from "react";
 
 import { MaterialsContext } from "../contexts";
 
@@ -21,7 +21,7 @@ function RouteComponent() {
   const matches = useMatches();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const { materials, setMaterials } = useContext(MaterialsContext);
+  const { materials, setMaterials } = use(MaterialsContext);
 
   const isExactDetailRoute = matches.length === 3;
   const material = materials.find((m) => m.id === materialId);

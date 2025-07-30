@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense, use } from "react";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
@@ -17,31 +17,31 @@ export const Route = createRootRoute({
   component: () => {
     const [materials, setMaterials] = useState([]);
 
-    const { data: typesData, isLoading: typesLoading } = useQuery({
+    const typesPromise = useQuery({
       queryKey: ["types"],
       queryFn: () => getTypes(),
       staleTime: 1000 * 60 * 60,
-    });
+    }).promise;
 
-    const { data: unitOptionsData, isLoading: unitOptionsLoading } = useQuery({
+    const unitOptionsPromise = useQuery({
       queryKey: ["unitOptions"],
       queryFn: () => getUnitOptions(),
       staleTime: 1000 * 60 * 60,
-    });
+    }).promise;
 
-    const { data: materialsData, isLoading: materialsLoading } = useQuery({
+    const materialsPromise = useQuery({
       queryKey: ["materials"],
       queryFn: () => getMaterials(),
       staleTime: 1000 * 60 * 60,
-    });
+    }).promise;
+
+    const typesData = use(typesPromise);
+    const unitOptionsData = use(unitOptionsPromise);
+    const materialsData = use(materialsPromise);
 
     useEffect(() => {
       setMaterials(materialsData ?? []);
     }, [materialsData]);
-
-    if (typesLoading || unitOptionsLoading || materialsLoading) {
-      return <div className="font-mono">Loading application data...</div>;
-    }
 
     return (
       <>
@@ -55,7 +55,9 @@ export const Route = createRootRoute({
             <div className="font-mono">
               <Header />
               <ErrorBoundary>
-                <Outlet />
+                <Suspense fallback={<div>Loading application data...</div>}>
+                  <Outlet />
+                </Suspense>
               </ErrorBoundary>
             </div>
           </MaterialsContext.Provider>

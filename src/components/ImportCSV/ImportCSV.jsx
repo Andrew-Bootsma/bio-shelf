@@ -1,10 +1,4 @@
-import {
-  useContext,
-  useRef,
-  useState,
-  useOptimistic,
-  useActionState,
-} from "react";
+import { use, useRef, useState, useOptimistic, useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { useRouter } from "@tanstack/react-router";
 import { MaterialMetaContext, MaterialsContext } from "../../contexts";
@@ -48,8 +42,8 @@ function ImportStatus() {
 
 const ImportCSV = () => {
   const router = useRouter();
-  const { materials, setMaterials } = useContext(MaterialsContext);
-  const { types, unitOptions } = useContext(MaterialMetaContext);
+  const { materials, setMaterials } = use(MaterialsContext);
+  const { types, unitOptions } = use(MaterialMetaContext);
   const [csvData, setCsvData] = useState([]);
   const [previewData, setPreviewData] = useState([]);
   const [errors, setErrors] = useState([]);

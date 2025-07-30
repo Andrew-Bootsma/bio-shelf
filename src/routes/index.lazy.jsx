@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { use } from "react";
 import { createLazyFileRoute } from "@tanstack/react-router";
 
 import { useMaterialStatus } from "../hooks/useMaterialStatus/useMaterialStatus";
@@ -11,7 +11,7 @@ export const Route = createLazyFileRoute("/")({
 });
 
 function Index() {
-  const { materials } = useContext(MaterialsContext);
+  const { materials } = use(MaterialsContext);
 
   const lowStockMaterials = materials.filter(
     (m) => useMaterialStatus(m) === "LOW",
