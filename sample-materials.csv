@@ -1,0 +1,16 @@
+name,type,quantity,unit,location,expirydate,vendor,description,notes
+Sodium Chloride,reagent,500,g,Lab A - Shelf 2,2025-12-31,Sigma-Aldrich,High purity NaCl for buffer preparation,Store in dry place
+Hydrochloric Acid,reagent,1000,mL,Fume Hood 1,2025-06-15,Fisher Scientific,37% concentrated HCl,Corrosive - handle with care
+PCR Tubes,consumable,100,pcs,Lab B - Drawer 3,2026-03-20,Eppendorf,0.2mL thin-wall PCR tubes,Sterile
+Blood Sample #001,sample,5,vials,Freezer -80C,2024-08-30,Internal,Patient blood samples for analysis,Handle with BSL-2 precautions
+Micropipette P1000,equipment,1,unit,Lab A - Bench 1,,Gilson,1000µL adjustable micropipette,Calibrated 2024-01-15
+Ethanol,reagent,2500,mL,Chemical Storage,2027-01-10,VWR,99.9% pure ethanol,Flammable
+Petri Dishes,consumable,50,pcs,Lab C - Cabinet 2,2025-11-30,Corning,90mm sterile plastic dishes,
+Tissue Sample,sample,10,slides,Pathology Lab,2024-09-15,Internal,H&E stained tissue sections,Room temperature storage
+Distilled Water,reagent,5000,mL,Prep Room,2025-08-20,Local,HPLC grade water,
+Gloves Nitrile,consumable,200,pcs,Supply Room,,VWR,Size M powder-free nitrile gloves,Latex-free
+Centrifuge,equipment,1,set,Lab A - Corner,2028-05-10,Eppendorf,Benchtop microcentrifuge 5424,Annual maintenance due
+Buffer Solution pH 7.4,reagent,250,mL,Cold Room,2024-12-01,Thermo,Phosphate buffered saline,Keep refrigerated
+Bacterial Culture,sample,3,tubes,Incubator 37C,2024-08-01,Internal,E.coli DH5α overnight culture,Biosafety level 1
+Filter Tips,consumable,96,pcs,Lab B - Top Shelf,2026-07-15,Thermo,200µL sterile filter tips,
+Microscope Slides,consumable,144,pcs,Microscopy Room,2027-03-30,VWR,Premium frosted slides,Clean before use

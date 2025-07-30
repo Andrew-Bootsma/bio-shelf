@@ -1,0 +1,6 @@
+name,type,quantity,unit,location,expirydate,vendor,description,notes
+Sodium Chloride,reagent,500,g,Lab A,2025-12-31,Sigma-Aldrich,High purity salt,
+PCR Tubes,consumable,100,pcs,Lab B,2026-03-20,Eppendorf,Sterile tubes,
+Blood Sample,sample,5,vials,Freezer,2024-08-30,Internal,Patient samples,
+Micropipette,equipment,1,unit,Bench 1,,Gilson,P1000 pipette,
+Ethanol,reagent,1000,mL,Storage,2027-01-10,VWR,99% pure,Flammable

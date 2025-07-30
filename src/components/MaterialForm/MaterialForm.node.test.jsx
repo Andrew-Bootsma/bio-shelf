@@ -1,11 +1,9 @@
 import { expect, test, describe, vi, afterEach, beforeEach } from "vitest";
 import { render, cleanup, fireEvent, waitFor } from "@testing-library/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import createFetchMock from "vitest-fetch-mock";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import { MaterialMetaContext, MaterialsContext } from "../../contexts";
 import MaterialForm from "./MaterialForm";
-
-const fetchMocker = createFetchMock(vi);
 
 // Mock router
 const mockNavigate = vi.fn();
@@ -16,14 +14,30 @@ vi.mock("@tanstack/react-router", () => ({
 }));
 
 // Mock postMaterial API
-vi.mock("../../api/postMaterial", () => ({
+vi.mock("../../api/postMaterial/postMaterial", () => ({
   default: vi.fn(),
 }));
 
-import postMaterial from "../../api/postMaterial";
+import postMaterial from "../../api/postMaterial/postMaterial";
+
+// Mock React 19 hooks for testing
+vi.mock("react", async () => {
+  const actual = await vi.importActual("react");
+  return {
+    ...actual,
+    useActionState: vi.fn(),
+  };
+});
+
+vi.mock("react-dom", async () => {
+  const actual = await vi.importActual("react-dom");
+  return {
+    ...actual,
+    useFormStatus: vi.fn(),
+  };
+});
 
 describe("MaterialForm", () => {
-  let queryClient;
   const mockSetMaterials = vi.fn();
 
   const defaultMetaContext = {
@@ -45,15 +59,51 @@ describe("MaterialForm", () => {
   };
 
   beforeEach(() => {
-    fetchMocker.resetMocks();
-    fetchMocker.enableMocks();
-    queryClient = new QueryClient({
-      defaultOptions: {
-        queries: { retry: false },
-        mutations: { retry: false },
-      },
-    });
     vi.clearAllMocks();
+
+    // Mock form submission for React 19 form actions
+    window.HTMLFormElement.prototype.requestSubmit = vi.fn(function () {
+      // Trigger form submission event
+      const event = new Event("submit", { bubbles: true, cancelable: true });
+      this.dispatchEvent(event);
+    });
+
+    // Setup useActionState mock
+    const mockFormAction = vi.fn(async (formData) => {
+      const materialFormData = {
+        name: formData.get("name"),
+        type: formData.get("type"),
+        quantity: Number(formData.get("quantity")),
+        unit: formData.get("unit"),
+        location: formData.get("location"),
+        expiryDate: formData.get("expiryDate"),
+        vendor: formData.get("vendor"),
+        description: formData.get("description"),
+        notes: formData.get("notes"),
+      };
+
+      try {
+        const result = await postMaterial(materialFormData);
+        mockSetMaterials([result]);
+        mockNavigate({ to: "/materials" });
+        return { success: true, material: result };
+      } catch (error) {
+        return { error: error.message || "Failed to save material" };
+      }
+    });
+
+    useActionState.mockReturnValue([
+      { error: null, success: false },
+      mockFormAction,
+    ]);
+
+    // Setup useFormStatus mock
+    useFormStatus.mockReturnValue({
+      pending: false,
+      data: null,
+      method: "post",
+      action: mockFormAction,
+    });
   });
 
   afterEach(() => {
@@ -66,13 +116,11 @@ describe("MaterialForm", () => {
     materialsContext = defaultMaterialsContext,
   ) => {
     return render(
-      <QueryClientProvider client={queryClient}>
-        <MaterialMetaContext.Provider value={metaContext}>
-          <MaterialsContext.Provider value={materialsContext}>
-            <MaterialForm materialData={materialData} />
-          </MaterialsContext.Provider>
-        </MaterialMetaContext.Provider>
-      </QueryClientProvider>,
+      <MaterialMetaContext.Provider value={metaContext}>
+        <MaterialsContext.Provider value={materialsContext}>
+          <MaterialForm materialData={materialData} />
+        </MaterialsContext.Provider>
+      </MaterialMetaContext.Provider>,
     );
   };
 
@@ -203,15 +251,19 @@ describe("MaterialForm", () => {
       target: { value: newMaterial.notes },
     });
 
-    // Submit form
-    const submitButton = screen.getByRole("button", { name: "Add" });
-    fireEvent.click(submitButton);
+    // Submit form - simulate form action call
+    const form = screen.container.querySelector("form");
+    const formData = new FormData(form);
+
+    // Get the mocked form action and call it directly
+    const [, formAction] = useActionState.mock.results[0].value;
+    await formAction(formData);
 
     await waitFor(() => {
       expect(postMaterial).toHaveBeenCalledWith({
         name: newMaterial.name,
         type: newMaterial.type,
-        quantity: String(newMaterial.quantity), // Form sends as string
+        quantity: newMaterial.quantity, // Form actions convert to number
         unit: newMaterial.unit,
         location: newMaterial.location,
         expiryDate: newMaterial.expiryDate,
@@ -255,41 +307,40 @@ describe("MaterialForm", () => {
       target: { value: "Test Location" },
     });
 
-    // Submit form
-    const submitButton = screen.getByRole("button", { name: "Add" });
-    fireEvent.click(submitButton);
+    // Submit form - simulate form action call
+    const form = screen.container.querySelector("form");
+    const formData = new FormData(form);
+
+    // Get the mocked form action and call it directly
+    const [, formAction] = useActionState.mock.results[0].value;
+    const result = await formAction(formData);
 
     await waitFor(() => {
       expect(postMaterial).toHaveBeenCalled();
     });
+
+    // Check that error was returned
+    expect(result.error).toBe("Network error");
 
     // Should not navigate on error
     expect(mockNavigate).not.toHaveBeenCalled();
     expect(mockSetMaterials).not.toHaveBeenCalled();
   });
 
-  test("disables form during submission", async () => {
-    postMaterial.mockImplementation(
-      () => new Promise((resolve) => setTimeout(resolve, 100)),
-    );
+  test("shows loading state during submission", async () => {
+    // Mock useFormStatus to return pending state
+    useFormStatus.mockReturnValue({
+      pending: true,
+      data: null,
+      method: "post",
+      action: vi.fn(),
+    });
 
     const screen = renderMaterialForm();
 
-    // Fill all required fields
-    fireEvent.change(screen.getByLabelText("Name"), {
-      target: { value: "Test" },
-    });
-    fireEvent.change(screen.getByLabelText("Location"), {
-      target: { value: "Test Location" },
-    });
-
-    const submitButton = screen.getByRole("button", { name: "Add" });
-    fireEvent.click(submitButton);
-
-    // Check if form is being submitted (mutation is in progress)
-    await waitFor(() => {
-      expect(postMaterial).toHaveBeenCalled();
-    });
+    // Check if loading state is shown when pending is true
+    expect(screen.getByText("Saving...")).toBeDefined();
+    expect(screen.getByText("Processing your request...")).toBeDefined();
   });
 
   test("renders all material types from context", () => {

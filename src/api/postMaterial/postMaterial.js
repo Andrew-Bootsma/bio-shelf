@@ -1,6 +1,4 @@
 export default async function postMaterial(material) {
-  console.log(material);
-
   const response = await fetch("/api/materials", {
     method: "POST",
     headers: {
@@ -9,8 +7,8 @@ export default async function postMaterial(material) {
     body: JSON.stringify({ ...material }),
   });
 
-  if (!response) {
-    throw new Error("Network response failed.");
+  if (!response.ok) {
+    throw new Error(`Failed to import material: ${material.name}`);
   }
 
   return response.json();

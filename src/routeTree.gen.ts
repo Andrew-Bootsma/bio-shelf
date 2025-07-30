@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRouteImport } from './routes/__root'
 
 const MaterialsLazyRouteImport = createFileRoute('/materials')()
+const ImportLazyRouteImport = createFileRoute('/import')()
 const IndexLazyRouteImport = createFileRoute('/')()
 const MaterialsNewLazyRouteImport = createFileRoute('/materials/new')()
 const MaterialsMaterialIdLazyRouteImport = createFileRoute(
@@ -27,6 +28,11 @@ const MaterialsLazyRoute = MaterialsLazyRouteImport.update({
   path: '/materials',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/materials.lazy').then((d) => d.Route))
+const ImportLazyRoute = ImportLazyRouteImport.update({
+  id: '/import',
+  path: '/import',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/import.lazy').then((d) => d.Route))
 const IndexLazyRoute = IndexLazyRouteImport.update({
   id: '/',
   path: '/',
@@ -55,6 +61,7 @@ const MaterialsMaterialIdEditLazyRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
+  '/import': typeof ImportLazyRoute
   '/materials': typeof MaterialsLazyRouteWithChildren
   '/materials/$materialId': typeof MaterialsMaterialIdLazyRouteWithChildren
   '/materials/new': typeof MaterialsNewLazyRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
+  '/import': typeof ImportLazyRoute
   '/materials': typeof MaterialsLazyRouteWithChildren
   '/materials/$materialId': typeof MaterialsMaterialIdLazyRouteWithChildren
   '/materials/new': typeof MaterialsNewLazyRoute
@@ -70,6 +78,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexLazyRoute
+  '/import': typeof ImportLazyRoute
   '/materials': typeof MaterialsLazyRouteWithChildren
   '/materials/$materialId': typeof MaterialsMaterialIdLazyRouteWithChildren
   '/materials/new': typeof MaterialsNewLazyRoute
@@ -79,6 +88,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/import'
     | '/materials'
     | '/materials/$materialId'
     | '/materials/new'
@@ -86,6 +96,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/import'
     | '/materials'
     | '/materials/$materialId'
     | '/materials/new'
@@ -93,6 +104,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/import'
     | '/materials'
     | '/materials/$materialId'
     | '/materials/new'
@@ -101,6 +113,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
+  ImportLazyRoute: typeof ImportLazyRoute
   MaterialsLazyRoute: typeof MaterialsLazyRouteWithChildren
 }
 
@@ -111,6 +124,13 @@ declare module '@tanstack/react-router' {
       path: '/materials'
       fullPath: '/materials'
       preLoaderRoute: typeof MaterialsLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/import': {
+      id: '/import'
+      path: '/import'
+      fullPath: '/import'
+      preLoaderRoute: typeof ImportLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -174,6 +194,7 @@ const MaterialsLazyRouteWithChildren = MaterialsLazyRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
+  ImportLazyRoute: ImportLazyRoute,
   MaterialsLazyRoute: MaterialsLazyRouteWithChildren,
 }
 export const routeTree = rootRouteImport

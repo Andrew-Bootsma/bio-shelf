@@ -1,0 +1,2 @@
+name,type,quantity,unit,location,expirydate,vendor,description,notes
+Example Material Name,reagent,100,mL,Lab Room - Shelf 1,2025-12-31,Vendor Name,Optional description,Optional notes

@@ -1,5 +1,3 @@
-// snapshot test
-
 import { Link } from "@tanstack/react-router";
 
 import StatCard from "./StatCard/StatCard";

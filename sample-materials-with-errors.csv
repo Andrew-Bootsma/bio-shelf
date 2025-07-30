@@ -1,0 +1,8 @@
+name,type,quantity,unit,location,expirydate,vendor,description,notes
+,reagent,500,g,Lab A,2025-12-31,Sigma-Aldrich,Missing name,This should cause an error
+Valid Material,invalid_type,100,pcs,Lab B,2026-03-20,Eppendorf,Invalid type,This should cause an error
+Another Material,reagent,not_a_number,mL,Lab C,2025-08-30,VWR,Invalid quantity,This should cause an error
+Good Material,reagent,250,invalid_unit,Lab D,2025-12-31,Fisher,Invalid unit for reagent,This should cause an error
+Missing Location,sample,,vials,,2024-08-30,Internal,Missing required location,This should cause an error
+Valid Sample,sample,10,vials,Lab E,invalid-date-format,Internal,Invalid date format,This should cause an error
+Perfect Material,reagent,500,mL,Lab F,2025-12-31,Sigma,This one should work,No errors expected

@@ -1,56 +1,93 @@
-import { useContext, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useContext, useOptimistic, useActionState, useState } from "react";
+import { useFormStatus } from "react-dom";
 import { useRouter } from "@tanstack/react-router";
 import { MaterialMetaContext, MaterialsContext } from "../../contexts";
-import postMaterial from "../../api/postMaterial";
+import postMaterial from "../../api/postMaterial/postMaterial";
+
+// SubmitButton component that uses useFormStatus
+function SubmitButton({ materialData }) {
+  const { pending } = useFormStatus();
+  return (
+    <button type="submit" disabled={pending}>
+      {pending ? "Saving..." : materialData ? "Update" : "Add"}
+    </button>
+  );
+}
+
+// FormStatus component for loading feedback
+function FormStatus() {
+  const { pending } = useFormStatus();
+  return pending ? (
+    <div className="text-blue-600">Processing your request...</div>
+  ) : null;
+}
 
 const MaterialForm = ({ materialData }) => {
   const router = useRouter();
   const { materials, setMaterials } = useContext(MaterialsContext);
-
-  const mutation = useMutation({
-    mutationFn: function (e) {
-      e.preventDefault();
-
-      return postMaterial(formData);
-    },
-    onSuccess: (newMaterial) => {
-      setMaterials([...materials, newMaterial]);
-      router.navigate({ to: "/materials" });
-    },
-  });
-
-  const [formData, setFormData] = useState({
-    name: materialData?.name ?? "",
-    type: materialData?.type ?? "reagent",
-    quantity: materialData?.quantity ?? 0,
-    unit: materialData?.unit ?? "",
-    location: materialData?.location ?? "",
-    expiryDate: materialData?.expiryDate ?? "",
-    vendor: materialData?.vendor ?? "",
-    description: materialData?.description ?? "",
-    notes: materialData?.notes ?? "",
-  });
-
   const { types, unitOptions } = useContext(MaterialMetaContext);
+
+  // State for reactive unit options
+  const [selectedType, setSelectedType] = useState(
+    materialData?.type ?? "reagent",
+  );
+
+  // Optimistic updates for better UX
+  const [, addOptimisticMaterial] = useOptimistic(
+    materials,
+    (state, newMaterial) => [...state, newMaterial],
+  );
+
+  // React 19 useActionState for form handling
+  const [state, formAction] = useActionState(
+    async (prevState, formData) => {
+      const materialFormData = {
+        name: formData.get("name"),
+        type: formData.get("type"),
+        quantity: Number(formData.get("quantity")),
+        unit: formData.get("unit"),
+        location: formData.get("location"),
+        expiryDate: formData.get("expiryDate"),
+        vendor: formData.get("vendor"),
+        description: formData.get("description"),
+        notes: formData.get("notes"),
+      };
+
+      // Optimistic update - show immediately
+      if (!materialData) {
+        // Only for new materials
+        const tempMaterial = { ...materialFormData, id: Date.now() };
+        addOptimisticMaterial(tempMaterial);
+      }
+
+      try {
+        const savedMaterial = await postMaterial(materialFormData);
+        setMaterials([...materials, savedMaterial]);
+        router.navigate({ to: "/materials" });
+        return { success: true, material: savedMaterial };
+      } catch (error) {
+        return { error: error.message || "Failed to save material" };
+      }
+    },
+    { error: null, success: false },
+  );
 
   if (!unitOptions || !types) {
     return <div className="mx-4 my-8">Loading...</div>;
   }
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
   return (
     <form
       className="max-w-4xl grow border border-black p-4 align-middle"
-      onSubmit={(e) => mutation.mutate(e)}
+      action={formAction}
     >
+      {/* Display error message if submission failed */}
+      {state?.error && (
+        <div className="mb-4 rounded border border-red-400 bg-red-100 p-3 text-red-700">
+          Error: {state.error}
+        </div>
+      )}
+
       <div className="form-element">
         <label htmlFor="name" className="mr-8">
           Name
@@ -59,9 +96,8 @@ const MaterialForm = ({ materialData }) => {
           id="name"
           name="name"
           type="text"
-          value={formData.name}
+          defaultValue={materialData?.name ?? ""}
           required
-          onChange={handleChange}
           className="grow"
         />
       </div>
@@ -73,8 +109,8 @@ const MaterialForm = ({ materialData }) => {
         <select
           id="type"
           name="type"
-          value={formData.type}
-          onChange={handleChange}
+          value={selectedType}
+          onChange={(e) => setSelectedType(e.target.value)}
           className="grow"
         >
           {types.map((type) => (
@@ -94,9 +130,8 @@ const MaterialForm = ({ materialData }) => {
             id="quantity"
             name="quantity"
             type="number"
-            value={formData.quantity}
+            defaultValue={materialData?.quantity ?? 0}
             required
-            onChange={handleChange}
             min={0}
             className="grow"
           />
@@ -108,11 +143,10 @@ const MaterialForm = ({ materialData }) => {
           <select
             id="unit"
             name="unit"
-            value={formData.unit}
-            onChange={handleChange}
+            defaultValue={materialData?.unit ?? ""}
             className="grow"
           >
-            {(unitOptions[formData.type] || []).map((unit) => (
+            {(unitOptions[selectedType] || []).map((unit) => (
               <option key={unit} value={unit}>
                 {unit}
               </option>
@@ -129,9 +163,8 @@ const MaterialForm = ({ materialData }) => {
           id="location"
           name="location"
           type="text"
-          value={formData.location}
+          defaultValue={materialData?.location ?? ""}
           required
-          onChange={handleChange}
           className="grow"
         />
       </div>
@@ -144,8 +177,7 @@ const MaterialForm = ({ materialData }) => {
           id="expiryDate"
           name="expiryDate"
           type="date"
-          value={formData.expiryDate}
-          onChange={handleChange}
+          defaultValue={materialData?.expiryDate ?? ""}
           className="grow"
           min={new Date().toISOString().split("T")[0]}
         />
@@ -159,8 +191,7 @@ const MaterialForm = ({ materialData }) => {
           id="vendor"
           name="vendor"
           type="text"
-          value={formData.vendor}
-          onChange={handleChange}
+          defaultValue={materialData?.vendor ?? ""}
           className="grow"
         />
       </div>
@@ -172,8 +203,7 @@ const MaterialForm = ({ materialData }) => {
         <textarea
           id="description"
           name="description"
-          value={formData.description}
-          onChange={handleChange}
+          defaultValue={materialData?.description ?? ""}
           className="grow"
         />
       </div>
@@ -185,12 +215,13 @@ const MaterialForm = ({ materialData }) => {
         <textarea
           id="notes"
           name="notes"
-          value={formData.notes}
-          onChange={handleChange}
+          defaultValue={materialData?.notes ?? ""}
           className="grow"
         />
       </div>
-      <button type="submit">{materialData ? "Update" : "Add"}</button>
+
+      <FormStatus />
+      <SubmitButton materialData={materialData} />
     </form>
   );
 };
