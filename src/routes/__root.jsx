@@ -4,9 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-import getTypes from "../api/getTypes";
-import getUnitOptions from "../api/getUnitOptions";
-import getMaterials from "../api/getMaterials";
+import getTypes from "../api/getTypes/getTypes";
+import getUnitOptions from "../api/getUnitOptions/getUnitOptions";
+import getMaterials from "../api/getMaterials/getMaterials";
 
 import Header from "../components/Header/Header";
 import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary";

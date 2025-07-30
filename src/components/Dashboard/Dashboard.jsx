@@ -32,9 +32,9 @@ const Dashboard = ({
         <Link className="button" to="/materials/new">
           + Add Material
         </Link>
-        {/* <Link className="button" to="/import">
+        <Link className="button" to="/import">
           Import CSV
-        </Link> */}
+        </Link>
         <Link className="button" to="/materials">
           View Full Inventory
         </Link>
