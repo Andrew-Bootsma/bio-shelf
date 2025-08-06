@@ -1,15 +1,18 @@
-name: Deploy to AWS
+name: Deploy Frontend to AWS
 
 on:
   push:
     branches: [main]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/deploy.yml'
 
 permissions:
   contents: read
 
 jobs:
-  deploy:
-    name: Deploy
+  deploy-frontend:
+    name: Deploy Frontend
     runs-on: ubuntu-latest
 
     steps:
@@ -21,12 +24,17 @@ jobs:
         with:
           node-version: "18"
           cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          cd frontend
+          npm ci
 
       - name: Build
-        run: npm run build
+        run: |
+          cd frontend
+          npm run build
         env:
           VITE_API_URL: ${{ secrets.API_URL }}
 
@@ -38,7 +46,7 @@ jobs:
           aws-region: us-east-1
 
       - name: Deploy to S3
-        run: aws s3 sync ./dist/ s3://${{ secrets.AWS_S3_BUCKET }} --delete
+        run: aws s3 sync ./frontend/dist/ s3://${{ secrets.AWS_S3_BUCKET }} --delete
 
       - name: Set CloudFront ID env var
         run: echo "CLOUDFRONT_DISTRIBUTION_ID=${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}" >> $GITHUB_ENV
