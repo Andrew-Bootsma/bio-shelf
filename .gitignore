@@ -1,7 +1,55 @@
+# OS Files
 .DS_Store
+Thumbs.db
+
+# Dependencies
 node_modules/
+**/node_modules/
+
+# Production builds
 dist/
+**/dist/
+dist-ssr/
+**/dist-ssr/
+
+# Environment variables
 .env
+.env.*
+**/.env
+**/.env.*
+
+# Test coverage
 coverage/
+**/coverage/
+
+# IDE
 .vscode/
+.idea/
+*.swp
+*.swo
+
+# Frontend specific
+frontend/.tanstack/
+
+# Backend specific
+backend/tmp/
+backend/log/
+backend/storage/
+backend/.bundle/
+backend/vendor/bundle/
+backend/public/assets/
+backend/public/packs/
+backend/config/master.key
+backend/config/credentials.yml.enc
+backend/*.sqlite3
+backend/*.sqlite3-*
+backend/.rspec_status
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Documentation (keep this if you don't want to track deployment docs)
 DEPLOYMENT.md
