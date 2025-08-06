@@ -1,10 +1,14 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
-
-  # Defines the root path route ("/")
-  # root "posts#index"
+  scope '/api' do
+    # Temporary mock endpoints - returns empty data to stop errors
+    get 'types', to: proc { [200, { 'Content-Type' => 'application/json' }, [
+      '[{"id":"reagent"},{"id":"sample"},{"id":"equipment"},{"id":"consumable"}]'
+    ]] }
+    
+    get 'unitOptions', to: proc { [200, { 'Content-Type' => 'application/json' }, [
+      '{"reagent":["mL","µL","g","mg","units"],"sample":["vials","tubes","slides","µg","samples"],"equipment":["unit","set","piece"],"consumable":["pcs","boxes","packs","sheets","strips"]}'
+    ]] }
+    
+    get 'materials', to: proc { [200, { 'Content-Type' => 'application/json' }, ['[]']] }
+  end
 end

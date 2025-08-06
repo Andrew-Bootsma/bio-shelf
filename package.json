@@ -6,14 +6,20 @@
   "scripts": {
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:frontend": "cd frontend && npm run dev",
-    "dev:backend": "cd backend && rails server",
+    "dev:backend": "cd backend && bundle exec rails server",
     "dev:json-server": "cd frontend && npm run json-server",
-    "install:all": "npm install && cd frontend && npm install",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && bundle install",
+    "install:frontend": "cd frontend && npm install",
+    "install:backend": "cd backend && bundle install",
     "build:frontend": "cd frontend && npm run build",
     "test:frontend": "cd frontend && npm test",
     "test:backend": "cd backend && bundle exec rspec",
     "lint:frontend": "cd frontend && npm run lint",
-    "format:frontend": "cd frontend && npm run format"
+    "format:frontend": "cd frontend && npm run format",
+    "db:create": "cd backend && bundle exec rails db:create",
+    "db:migrate": "cd backend && bundle exec rails db:migrate",
+    "db:seed": "cd backend && bundle exec rails db:seed",
+    "db:setup": "cd backend && bundle exec rails db:setup"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
